@@ -1,0 +1,1543 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>CBO Playbook — 300 Studios, Outcome-Gated</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Fraunces:ital,wght@0,400;0,600;0,700;1,400&family=Inter:wght@300;400;500;600&family=JetBrains+Mono:wght@400;500&display=swap');
+
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+:root {
+  --orange: #F5A623;
+  --orange-soft: #FFF4E0;
+  --orange-dark: #B86E00;
+  --ink: #18181B;
+  --ink2: #3F3F46;
+  --ink3: #71717A;
+  --ink4: #A1A1AA;
+  --paper: #FAFAF7;
+  --paper2: #F4F2EC;
+  --paper3: #EAE6DC;
+  --border: #E4E0D6;
+  --white: #FFFFFF;
+  --green: #14532D;
+  --green-bg: #ECFDF5;
+  --green-mid: #16A34A;
+  --red: #991B1B;
+  --red-bg: #FEF2F2;
+  --blue: #1E3A8A;
+  --blue-bg: #EFF6FF;
+  --purple: #6B21A8;
+  --purple-bg: #FAF5FF;
+  --serif: 'Fraunces', Georgia, serif;
+  --sans: 'Inter', sans-serif;
+  --mono: 'JetBrains Mono', monospace;
+}
+
+html { scroll-behavior: smooth; }
+body { font-family: var(--sans); background: var(--paper); color: var(--ink); line-height: 1.7; font-size: 14.5px; }
+
+@media print {
+  .sidebar { display: none; }
+  .main { margin-left: 0; }
+  section { page-break-inside: avoid; }
+}
+
+.layout { display: flex; min-height: 100vh; }
+
+/* ── SIDEBAR ── */
+.sidebar {
+  width: 256px;
+  background: var(--ink);
+  padding: 32px 0;
+  position: fixed;
+  top: 0; left: 0; bottom: 0;
+  overflow-y: auto;
+  z-index: 50;
+}
+.sb-logo { padding: 0 24px 24px; border-bottom: 1px solid rgba(255,255,255,0.08); margin-bottom: 20px; }
+.sb-logo .k { font-family: var(--serif); font-style: italic; font-size: 22px; color: var(--orange); font-weight: 600; }
+.sb-logo .sub { font-size: 10px; color: rgba(255,255,255,0.4); margin-top: 2px; text-transform: uppercase; letter-spacing: 1.5px; font-family: var(--mono); }
+.sb-section { padding: 0 24px; margin-bottom: 6px; }
+.sb-label { font-size: 9px; text-transform: uppercase; letter-spacing: 1.5px; color: rgba(255,255,255,0.3); margin-bottom: 6px; margin-top: 14px; padding-left: 4px; }
+.sb-link {
+  display: flex; align-items: center; gap: 8px;
+  padding: 6px 10px; border-radius: 5px;
+  font-size: 12.5px; color: rgba(255,255,255,0.6);
+  text-decoration: none; transition: all 0.15s;
+  margin-bottom: 1px; cursor: pointer;
+}
+.sb-link:hover { background: rgba(255,255,255,0.06); color: #fff; }
+.sb-link.active { background: rgba(245,166,35,0.13); color: var(--orange); }
+.sb-num { font-family: var(--mono); font-size: 9px; opacity: 0.6; min-width: 18px; }
+
+/* ── MAIN ── */
+.main { margin-left: 256px; flex: 1; max-width: 900px; padding: 56px 64px 120px; }
+
+/* ── HERO ── */
+.hero { margin-bottom: 64px; padding-bottom: 40px; border-bottom: 1px solid var(--border); }
+.hero-tag {
+  display: inline-block;
+  font-family: var(--mono); font-size: 10px;
+  text-transform: uppercase; letter-spacing: 2px;
+  color: var(--orange-dark); background: var(--orange-soft);
+  padding: 4px 10px; border-radius: 20px; margin-bottom: 18px;
+}
+.hero-title {
+  font-family: var(--serif); font-size: 56px;
+  line-height: 1.05; font-weight: 600; color: var(--ink);
+  margin-bottom: 14px; letter-spacing: -1px;
+}
+.hero-title em { font-style: italic; color: var(--orange-dark); }
+.hero-sub {
+  font-size: 18px; color: var(--ink3); font-weight: 300;
+  max-width: 600px; line-height: 1.55; margin-bottom: 32px;
+}
+.hero-meta { display: grid; grid-template-columns: repeat(4, 1fr); gap: 20px; }
+.hero-meta-label { font-size: 9px; text-transform: uppercase; letter-spacing: 1.2px; color: var(--ink4); margin-bottom: 4px; }
+.hero-meta-value { font-family: var(--mono); font-size: 12.5px; color: var(--ink2); font-weight: 500; }
+
+/* ── SECTIONS ── */
+section { margin-bottom: 72px; scroll-margin-top: 24px; }
+.s-eyebrow { display: flex; align-items: center; gap: 10px; margin-bottom: 10px; }
+.s-num {
+  font-family: var(--mono); font-size: 10px;
+  color: var(--orange-dark); background: var(--orange-soft);
+  padding: 3px 8px; border-radius: 4px; font-weight: 500;
+}
+.s-tag { font-size: 10px; text-transform: uppercase; letter-spacing: 1.5px; color: var(--ink4); }
+.s-title {
+  font-family: var(--serif); font-size: 36px;
+  font-weight: 600; color: var(--ink);
+  line-height: 1.15; margin-bottom: 8px; letter-spacing: -0.5px;
+}
+.s-sub { font-size: 15px; color: var(--ink3); margin-bottom: 28px; font-weight: 300; line-height: 1.5; }
+p { color: var(--ink2); margin-bottom: 16px; line-height: 1.7; }
+p:last-child { margin-bottom: 0; }
+strong { color: var(--ink); font-weight: 600; }
+
+/* ── CALLOUT ── */
+.cal { border-radius: 8px; padding: 16px 20px; margin: 20px 0; border-left: 3px solid; font-size: 13.5px; }
+.cal.orange { background: var(--orange-soft); border-color: var(--orange); }
+.cal.green { background: var(--green-bg); border-color: var(--green-mid); }
+.cal.red { background: var(--red-bg); border-color: #dc2626; }
+.cal.blue { background: var(--blue-bg); border-color: #3b82f6; }
+.cal.purple { background: var(--purple-bg); border-color: #a855f7; }
+.cal.neutral { background: var(--paper2); border-color: var(--border); }
+.cal-label { font-size: 9px; font-weight: 600; text-transform: uppercase; letter-spacing: 1.5px; margin-bottom: 6px; }
+.cal.orange .cal-label { color: var(--orange-dark); }
+.cal.green .cal-label { color: var(--green); }
+.cal.red .cal-label { color: var(--red); }
+.cal.blue .cal-label { color: var(--blue); }
+.cal.purple .cal-label { color: var(--purple); }
+.cal.neutral .cal-label { color: var(--ink3); }
+.cal p { margin-bottom: 8px; }
+.cal p:last-child { margin-bottom: 0; }
+
+/* ── METRIC STRIP ── */
+.mstrip {
+  display: grid; grid-template-columns: repeat(5, 1fr); gap: 1px;
+  background: var(--border); border: 1px solid var(--border);
+  border-radius: 10px; overflow: hidden; margin: 24px 0;
+}
+.mcell { background: var(--white); padding: 14px 10px; text-align: center; }
+.mcell .n {
+  font-family: var(--serif); font-size: 26px; font-weight: 600;
+  color: var(--orange-dark); display: block; line-height: 1;
+}
+.mcell .l { font-size: 10.5px; color: var(--ink3); margin-top: 4px; line-height: 1.3; }
+
+/* ── TASK LIST ── */
+.tasks { list-style: none; }
+.tasks li {
+  display: flex; align-items: flex-start; gap: 10px;
+  padding: 8px 0; border-bottom: 1px solid var(--paper3);
+  font-size: 13.5px; color: var(--ink2); line-height: 1.55;
+}
+.tasks li:last-child { border-bottom: none; }
+.tdot { width: 6px; height: 6px; border-radius: 50%; background: var(--orange); flex-shrink: 0; margin-top: 7px; }
+.tdot.green { background: var(--green-mid); }
+.tdot.red { background: #dc2626; }
+.tdot.gray { background: var(--ink4); }
+.tdot.blue { background: #3b82f6; }
+.tdot.purple { background: #a855f7; }
+
+/* ── PHASE GATE CARDS ── */
+.gates {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 16px;
+  margin: 28px 0;
+}
+.gate {
+  background: var(--white);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  overflow: hidden;
+  position: relative;
+}
+.gate-top {
+  display: grid;
+  grid-template-columns: 120px 1fr auto;
+  gap: 18px;
+  align-items: center;
+  padding: 18px 22px;
+  border-bottom: 1px solid var(--border);
+}
+.gate-pill {
+  font-family: var(--mono);
+  font-size: 10px;
+  text-transform: uppercase;
+  letter-spacing: 1.2px;
+  padding: 4px 10px;
+  border-radius: 20px;
+  text-align: center;
+  font-weight: 600;
+}
+.gate-1 .gate-pill { background: var(--paper3); color: var(--ink2); }
+.gate-2 .gate-pill { background: var(--orange-soft); color: var(--orange-dark); }
+.gate-3 .gate-pill { background: var(--blue-bg); color: var(--blue); }
+.gate-4 .gate-pill { background: var(--green-bg); color: var(--green); }
+.gate-name { font-family: var(--serif); font-size: 22px; font-weight: 600; color: var(--ink); }
+.gate-sub { font-size: 12px; color: var(--ink3); margin-top: 2px; }
+.gate-budget {
+  font-family: var(--mono);
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--orange-dark);
+  background: var(--orange-soft);
+  padding: 6px 12px;
+  border-radius: 6px;
+  white-space: nowrap;
+}
+.gate-body { padding: 16px 22px 20px; }
+.gate-criteria {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+  margin-bottom: 18px;
+  padding-bottom: 16px;
+  border-bottom: 1px dashed var(--paper3);
+}
+.gate-criterion {
+  background: var(--paper);
+  border-radius: 8px;
+  padding: 12px 14px;
+}
+.gate-criterion-label {
+  font-size: 9px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  color: var(--ink4);
+  margin-bottom: 4px;
+}
+.gate-criterion-value {
+  font-family: var(--mono);
+  font-size: 16px;
+  color: var(--ink);
+  font-weight: 600;
+}
+.gate-criterion-desc { font-size: 11px; color: var(--ink3); margin-top: 2px; }
+
+.gate-section {
+  margin-top: 14px;
+}
+.gate-section-label {
+  font-size: 10px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  color: var(--ink3);
+  margin-bottom: 8px;
+}
+.gate-tasks { list-style: none; }
+.gate-tasks li {
+  display: flex;
+  align-items: flex-start;
+  gap: 8px;
+  font-size: 12.5px;
+  color: var(--ink2);
+  line-height: 1.5;
+  padding: 4px 0;
+}
+.gate-tasks li::before {
+  content: '→';
+  color: var(--orange-dark);
+  font-weight: 600;
+  flex-shrink: 0;
+}
+
+.gate-unlock {
+  margin-top: 14px;
+  padding: 10px 12px;
+  background: var(--green-bg);
+  border-radius: 6px;
+  font-size: 12px;
+  color: var(--green);
+  font-weight: 500;
+}
+.gate-unlock strong { color: var(--green); }
+.gate-unlock::before { content: '🔓 '; }
+
+/* ── CHANNEL MIX ── */
+.channel-mix { margin: 24px 0; }
+.ch-row {
+  display: grid;
+  grid-template-columns: 32px 140px 1fr 60px;
+  gap: 14px; padding: 14px 0;
+  border-bottom: 1px solid var(--paper3);
+  align-items: start;
+}
+.ch-row:last-child { border-bottom: none; }
+.ch-icon {
+  width: 32px; height: 32px; border-radius: 7px;
+  display: flex; align-items: center; justify-content: center;
+  font-family: var(--mono); font-size: 13px; font-weight: 600;
+}
+.ch-1 { background: var(--orange-soft); color: var(--orange-dark); }
+.ch-2 { background: var(--green-bg); color: var(--green); }
+.ch-3 { background: var(--blue-bg); color: var(--blue); }
+.ch-4 { background: var(--purple-bg); color: var(--purple); }
+.ch-5 { background: #FEF3C7; color: #92400E; }
+.ch-6 { background: #FCE7F3; color: #9D174D; }
+.ch-name { font-weight: 600; font-size: 13.5px; color: var(--ink); }
+.ch-name-sub { font-size: 11px; color: var(--ink4); margin-top: 2px; }
+.ch-desc { font-size: 13px; color: var(--ink2); line-height: 1.55; }
+.ch-share {
+  font-family: var(--mono); font-size: 11px; font-weight: 500;
+  color: var(--ink2); background: var(--paper2);
+  padding: 3px 8px; border-radius: 4px;
+  text-align: center; white-space: nowrap; height: fit-content;
+}
+
+/* ── BUDGET TABLE ── */
+.budget-section {
+  background: var(--white);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  overflow: hidden;
+  margin: 24px 0;
+}
+.bs-header {
+  padding: 14px 20px;
+  background: var(--paper2);
+  border-bottom: 1px solid var(--border);
+  display: flex; align-items: center; justify-content: space-between;
+}
+.bs-name { font-family: var(--serif); font-size: 17px; font-weight: 600; color: var(--ink); }
+.bs-sub { font-size: 11px; color: var(--ink3); margin-top: 2px; }
+.bs-total {
+  font-family: var(--mono); font-size: 13px; font-weight: 600;
+  color: var(--orange-dark); background: var(--orange-soft);
+  padding: 4px 10px; border-radius: 6px;
+}
+.btab { width: 100%; border-collapse: collapse; }
+.btab th {
+  padding: 10px 16px; text-align: left;
+  font-size: 10px; font-weight: 500;
+  text-transform: uppercase; letter-spacing: 0.8px;
+  color: var(--ink4); border-bottom: 1px solid var(--paper3);
+  background: var(--paper);
+}
+.btab th:last-child, .btab td:last-child { text-align: right; font-family: var(--mono); }
+.btab td {
+  padding: 11px 16px; border-bottom: 1px solid var(--paper3);
+  font-size: 12.5px; color: var(--ink2); vertical-align: top;
+}
+.btab tr:last-child td { border-bottom: none; font-weight: 600; background: var(--paper); }
+.bcat {
+  display: inline-block; font-size: 9px;
+  padding: 1px 6px; border-radius: 3px;
+  font-weight: 600; margin-right: 6px;
+  text-transform: uppercase; letter-spacing: 0.4px;
+}
+.bcat-ads { background: var(--blue-bg); color: var(--blue); }
+.bcat-content { background: var(--purple-bg); color: var(--purple); }
+.bcat-event { background: var(--orange-soft); color: var(--orange-dark); }
+.bcat-tools { background: var(--paper3); color: var(--ink2); }
+.bcat-incent { background: var(--green-bg); color: var(--green); }
+.bcat-pr { background: #FCE7F3; color: #9D174D; }
+
+/* ── SCHEDULE ── */
+.schedule {
+  background: var(--white); border: 1px solid var(--border);
+  border-radius: 10px; overflow: hidden; margin: 20px 0;
+}
+.sc-header { background: var(--ink); padding: 12px 18px; }
+.sc-title {
+  font-family: var(--mono); font-size: 11px;
+  color: var(--orange); font-weight: 500;
+  text-transform: uppercase; letter-spacing: 1.2px;
+}
+.sc-row { display: grid; grid-template-columns: 110px 1fr; border-bottom: 1px solid var(--paper3); }
+.sc-row:last-child { border-bottom: none; }
+.sc-time {
+  padding: 12px 14px; font-family: var(--mono); font-size: 10.5px;
+  color: var(--ink4); background: var(--paper2);
+  display: flex; align-items: center; border-right: 1px solid var(--border);
+}
+.sc-task { padding: 12px 16px; font-size: 13px; color: var(--ink2); line-height: 1.5; }
+.sc-task strong { color: var(--ink); }
+.sc-badge {
+  display: inline-block; font-size: 9px;
+  padding: 1px 6px; border-radius: 3px;
+  font-weight: 600; margin-left: 5px;
+  text-transform: uppercase; letter-spacing: 0.5px;
+}
+.b-orange { background: var(--orange-soft); color: var(--orange-dark); }
+.b-green { background: var(--green-bg); color: var(--green); }
+.b-blue { background: var(--blue-bg); color: var(--blue); }
+.b-gray { background: var(--paper3); color: var(--ink3); }
+
+/* ── MSG BLOCKS ── */
+.msg { background: var(--paper2); border: 1px solid var(--border); border-radius: 8px; overflow: hidden; margin: 14px 0; }
+.msg-h { padding: 9px 14px; background: var(--paper3); border-bottom: 1px solid var(--border); display: flex; align-items: center; justify-content: space-between; }
+.msg-l { font-size: 10.5px; font-weight: 600; color: var(--ink3); text-transform: uppercase; letter-spacing: 0.7px; }
+.msg-c { font-size: 9px; padding: 2px 7px; border-radius: 3px; font-weight: 600; }
+.ch-ig { background: #FCE7F3; color: #9D174D; }
+.ch-wa { background: var(--green-bg); color: var(--green); }
+.msg-b { padding: 12px 14px; font-size: 13px; color: var(--ink2); line-height: 1.65; white-space: pre-wrap; font-style: italic; }
+
+/* ── KPI CARDS ── */
+.kgrid { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 12px; margin: 20px 0; }
+.kcard { background: var(--white); border: 1px solid var(--border); border-radius: 10px; padding: 16px; }
+.k-label { font-size: 9px; text-transform: uppercase; letter-spacing: 1px; color: var(--ink4); margin-bottom: 6px; font-weight: 600; }
+.k-val { font-family: var(--serif); font-size: 28px; color: var(--ink); line-height: 1; margin-bottom: 4px; font-weight: 600; }
+.k-val.orange { color: var(--orange-dark); }
+.k-desc { font-size: 11.5px; color: var(--ink3); line-height: 1.45; }
+
+/* ── COMP TABLE ── */
+.ctab { width: 100%; border-collapse: collapse; border: 1px solid var(--border); border-radius: 10px; overflow: hidden; margin: 20px 0; font-size: 13px; }
+.ctab th { padding: 11px 16px; text-align: left; font-size: 10.5px; font-weight: 500; text-transform: uppercase; letter-spacing: 0.8px; background: var(--ink); color: rgba(255,255,255,0.65); }
+.ctab th:last-child { color: var(--orange); }
+.ctab td { padding: 9px 16px; border-bottom: 1px solid var(--paper3); color: var(--ink2); vertical-align: middle; }
+.ctab tr:last-child td { border-bottom: none; }
+.ctab .ck { color: var(--green-mid); font-weight: 700; }
+.ctab .cx { color: #cbd5e1; }
+.ctab .hl { color: var(--orange-dark); font-weight: 500; }
+
+/* ── OBJECTION ── */
+.obj-list { display: flex; flex-direction: column; gap: 12px; margin: 20px 0; }
+.obj-card { background: var(--white); border: 1px solid var(--border); border-radius: 8px; overflow: hidden; }
+.obj-q { padding: 11px 16px; background: var(--paper2); border-bottom: 1px solid var(--border); font-size: 13px; font-weight: 500; color: var(--ink); display: flex; align-items: center; gap: 8px; }
+.obj-q::before { content: '"'; font-family: var(--serif); font-size: 26px; color: var(--ink4); line-height: 0.6; margin-top: 6px; }
+.obj-a { padding: 11px 16px; font-size: 13px; color: var(--ink2); line-height: 1.6; }
+
+/* ── PROGRESS LADDER ── */
+.ladder { margin: 28px 0; }
+.ladder-row {
+  display: grid;
+  grid-template-columns: 60px 90px 1fr 100px;
+  gap: 14px;
+  align-items: center;
+  padding: 14px 0;
+  border-bottom: 1px solid var(--paper3);
+}
+.ladder-row:last-child { border-bottom: none; }
+.ladder-step {
+  font-family: var(--mono);
+  font-size: 11px;
+  color: var(--ink4);
+  text-align: center;
+}
+.ladder-milestone {
+  font-family: var(--serif);
+  font-size: 18px;
+  font-weight: 600;
+  color: var(--ink);
+}
+.ladder-what { font-size: 12.5px; color: var(--ink3); line-height: 1.5; }
+.ladder-time {
+  font-family: var(--mono);
+  font-size: 11px;
+  color: var(--orange-dark);
+  background: var(--orange-soft);
+  padding: 3px 8px;
+  border-radius: 4px;
+  text-align: center;
+  font-weight: 500;
+}
+
+hr.div { border: none; border-top: 1px solid var(--border); margin: 48px 0; }
+
+.doc-foot { margin-top: 72px; padding-top: 28px; border-top: 1px solid var(--border); display: flex; justify-content: space-between; align-items: center; }
+.foot-logo { font-family: var(--serif); font-style: italic; font-size: 15px; color: var(--orange-dark); font-weight: 600; }
+.foot-note { font-size: 11px; color: var(--ink4); font-family: var(--mono); }
+
+@media (max-width: 900px) {
+  .sidebar { display: none; }
+  .main { margin-left: 0; padding: 32px 20px 80px; }
+  .hero-title { font-size: 36px; }
+  .hero-meta { grid-template-columns: 1fr 1fr; }
+  .mstrip { grid-template-columns: repeat(3, 1fr); }
+  .kgrid { grid-template-columns: 1fr 1fr; }
+  .gate-top { grid-template-columns: 1fr; gap: 10px; }
+  .gate-criteria { grid-template-columns: 1fr; }
+  .ladder-row { grid-template-columns: 40px 1fr 80px; gap: 10px; }
+  .ladder-row .ladder-what { grid-column: 1 / -1; }
+  .ch-row { grid-template-columns: 28px 1fr; gap: 10px; }
+  .ch-row .ch-desc, .ch-row .ch-share { grid-column: 2; }
+}
+</style>
+</head>
+<body>
+
+<div class="layout">
+<nav class="sidebar">
+  <div class="sb-logo">
+    <div class="k">GTM Playbook</div>
+    <div class="sub">CBO · Outcome-gated</div>
+  </div>
+
+  <div class="sb-section">
+    <div class="sb-label">Overview</div>
+    <a class="sb-link" href="#mission"><span class="sb-num">01</span>Approach</a>
+    <a class="sb-link" href="#math"><span class="sb-num">02</span>The math</a>
+    <a class="sb-link" href="#ladder"><span class="sb-num">03</span>Milestone ladder</a>
+  </div>
+
+  <div class="sb-section">
+    <div class="sb-label">Phase gates</div>
+    <a class="sb-link" href="#gate1"><span class="sb-num">04</span>Gate 1 — Foundation</a>
+    <a class="sb-link" href="#gate2"><span class="sb-num">05</span>Gate 2 — Engine</a>
+    <a class="sb-link" href="#gate3"><span class="sb-num">06</span>Gate 3 — Scale</a>
+    <a class="sb-link" href="#gate4"><span class="sb-num">07</span>Gate 4 — Close</a>
+  </div>
+
+  <div class="sb-section">
+    <div class="sb-label">Strategy</div>
+    <a class="sb-link" href="#channels"><span class="sb-num">08</span>Channel mix</a>
+    <a class="sb-link" href="#budget"><span class="sb-num">09</span>Budget proposal</a>
+  </div>
+
+  <div class="sb-section">
+    <div class="sb-label">Execution</div>
+    <a class="sb-link" href="#daily"><span class="sb-num">10</span>Daily rhythm</a>
+    <a class="sb-link" href="#outreach"><span class="sb-num">11</span>Outreach</a>
+    <a class="sb-link" href="#discovery"><span class="sb-num">12</span>Discovery call</a>
+    <a class="sb-link" href="#close"><span class="sb-num">13</span>Closing & tier</a>
+    <a class="sb-link" href="#messages"><span class="sb-num">14</span>Templates</a>
+    <a class="sb-link" href="#objections"><span class="sb-num">15</span>Objections</a>
+  </div>
+
+  <div class="sb-section">
+    <div class="sb-label">Accountability</div>
+    <a class="sb-link" href="#metrics"><span class="sb-num">16</span>Weekly metrics</a>
+    <a class="sb-link" href="#risks"><span class="sb-num">17</span>Risks</a>
+  </div>
+</nav>
+
+<main class="main">
+
+<!-- HERO -->
+<div class="hero">
+  <span class="hero-tag">the platform · CBO Playbook · Outcome-gated</span>
+  <h1 class="hero-title">300 studios.<br><em>Earn each phase.</em></h1>
+  <p class="hero-sub">An outcome-gated growth playbook — you unlock the next phase (and its budget) by hitting concrete milestones, not by waiting for the calendar. Lean spend in early phases. Scale only when proof is in.</p>
+  <div class="hero-meta">
+    <div>
+      <div class="hero-meta-label">Owner</div>
+      <div class="hero-meta-value">the CBO — CBO</div>
+    </div>
+    <div>
+      <div class="hero-meta-label">Target</div>
+      <div class="hero-meta-value">300 paid by May '27</div>
+    </div>
+    <div>
+      <div class="hero-meta-label">Plan</div>
+      <div class="hero-meta-value">Premium · $40/mo</div>
+    </div>
+    <div>
+      <div class="hero-meta-label">Total proposed budget</div>
+      <div class="hero-meta-value">$12K–$17K / 12mo</div>
+    </div>
+  </div>
+</div>
+
+<!-- 01 APPROACH -->
+<section id="mission">
+  <div class="s-eyebrow">
+    <span class="s-num">01</span>
+    <span class="s-tag">Approach</span>
+  </div>
+  <h2 class="s-title">The approach</h2>
+  <p class="s-sub">Two structural choices that make the plan disciplined and easy to fund.</p>
+
+  <p><strong>1. Phases are gated by outcomes, not months.</strong> Instead of "Phase 2 starts in August," it's "Phase 2 unlocks when we hit 10 paid studios." This means we don't waste budget scaling channels before they've proven themselves, and we don't get trapped pacing to a calendar instead of pacing to reality. If we hit 10 paid studios in week 6, we accelerate. If it takes 12 weeks, we stay lean longer.</p>
+
+  <p><strong>2. Budget is deliberately lean — $12K–$17K total over 12 months.</strong> We start at $200–$330/month for the first 3 months when we're still learning what converts. Only after proof do we scale spend — and even then, in measured steps tied to milestones.</p>
+
+  <div class="cal orange">
+    <div class="cal-label">The pitch to the CEO</div>
+    <p>"I want to be conservative on spend until we have data. Give me $200–$330/month for the first 3 months — that's enough for tools, light content, and a small ads test. When I hit 10 paid studios, that's the proof we need: it means the playbook works, and I'll come back with a request to scale to $660/month. From there, every spend increase is tied to a concrete milestone I've already delivered."</p>
+  </div>
+</section>
+
+<hr class="div">
+
+<!-- 02 MATH -->
+<section id="math">
+  <div class="s-eyebrow">
+    <span class="s-num">02</span>
+    <span class="s-tag">The math</span>
+  </div>
+  <h2 class="s-title">The realistic math</h2>
+  <p class="s-sub">Same 300/12-month goal — but the path is unevenly distributed, with most of the growth in the back half.</p>
+
+  <div class="mstrip">
+    <div class="mcell"><span class="n">300</span><div class="l">paid studios target</div></div>
+    <div class="mcell"><span class="n">12</span><div class="l">months</div></div>
+    <div class="mcell"><span class="n">~25</span><div class="l">studios/month avg</div></div>
+    <div class="mcell"><span class="n">~$12K</span><div class="l">MRR at 300 studios</div></div>
+    <div class="mcell"><span class="n">~~$53</span><div class="l">CAC across all channels</div></div>
+  </div>
+
+  <p>The 25/month average is misleading. The real growth curve looks more like: 5/month in months 1–3, 15/month in months 4–6, 30/month in months 7–9, 35/month in months 10–12. This compounding pattern is why outcome gating works — we earn the right to scale by proving each phase.</p>
+
+  <div class="cal green">
+    <div class="cal-label">Why the budget is small and still works</div>
+    <p>We're not scaling all six channels simultaneously. In the first 3 months, only direct outreach matters — we don't need $2.3K/month for paid ads when we don't yet know which ad creative converts. The phased approach means we pay for what we've proven works, not for hypothetical scale.</p>
+  </div>
+</section>
+
+<hr class="div">
+
+<!-- 03 LADDER -->
+<section id="ladder">
+  <div class="s-eyebrow">
+    <span class="s-num">03</span>
+    <span class="s-tag">Milestone ladder</span>
+  </div>
+  <h2 class="s-title">The milestone ladder</h2>
+  <p class="s-sub">Four gates between 0 and 300. Each gate unlocks budget, channels, and operational support.</p>
+
+  <div class="ladder">
+    <div class="ladder-row">
+      <div class="ladder-step">START</div>
+      <div class="ladder-milestone">0 studios</div>
+      <div class="ladder-what">Begin Gate 1 — Foundation. $200–$330/month. Warm network + cold outreach only.</div>
+      <div class="ladder-time">~Now</div>
+    </div>
+    <div class="ladder-row">
+      <div class="ladder-step">GATE 1 → 2</div>
+      <div class="ladder-milestone">10 paid · $400 MRR</div>
+      <div class="ladder-what">Unlock Gate 2 — Engine. Budget scales to $650–$800/month. Add paid ads test + content cadence.</div>
+      <div class="ladder-time">~Mo 2–3</div>
+    </div>
+    <div class="ladder-row">
+      <div class="ladder-step">GATE 2 → 3</div>
+      <div class="ladder-milestone">40 paid · $1.6K MRR</div>
+      <div class="ladder-what">Unlock Gate 3 — Scale. Budget scales to $1.3K–$2K/month. Add events, geographic expansion.</div>
+      <div class="ladder-time">~Mo 5–6</div>
+    </div>
+    <div class="ladder-row">
+      <div class="ladder-step">GATE 3 → 4</div>
+      <div class="ladder-milestone">120 paid · $4.8K MRR</div>
+      <div class="ladder-what">Unlock Gate 4 — Close. Budget scales to $2K–$2.7K/month + flagship event. PR push, partnerships.</div>
+      <div class="ladder-time">~Mo 9</div>
+    </div>
+    <div class="ladder-row">
+      <div class="ladder-step">FINISH</div>
+      <div class="ladder-milestone">300 paid · ~$12K MRR</div>
+      <div class="ladder-what">Goal achieved. Plan year 2. By this point referrals + events should generate 50%+ of new leads.</div>
+      <div class="ladder-time">~Mo 12</div>
+    </div>
+  </div>
+
+  <div class="cal blue">
+    <div class="cal-label">The "behind schedule" rule</div>
+    <p>If we haven't hit a gate milestone by the suggested time window (e.g. still at 7 paid after 4 months), we don't automatically advance the budget. We diagnose first: is the bottleneck product, message, or sourcing? Stay in the current phase, fix the bottleneck, then advance. This protects against the most common startup failure mode — scaling spend on top of a broken funnel.</p>
+  </div>
+</section>
+
+<hr class="div">
+
+<!-- GATE 1 -->
+<section id="gate1">
+  <div class="s-eyebrow">
+    <span class="s-num">04</span>
+    <span class="s-tag">Phase one</span>
+  </div>
+  <h2 class="s-title">Gate 1 — Foundation</h2>
+  <p class="s-sub">The proof-of-playbook phase. Warm network first, cold outreach second. No ads. Minimal spend.</p>
+
+  <div class="gates">
+    <div class="gate gate-1">
+      <div class="gate-top">
+        <span class="gate-pill">Phase 1</span>
+        <div>
+          <div class="gate-name">Foundation</div>
+          <div class="gate-sub">Prove the playbook works at small scale before spending real money.</div>
+        </div>
+        <span class="gate-budget">$200–$330/mo</span>
+      </div>
+      <div class="gate-body">
+        <div class="gate-criteria">
+          <div class="gate-criterion">
+            <div class="gate-criterion-label">Entry criteria</div>
+            <div class="gate-criterion-value">0 paid studios</div>
+            <div class="gate-criterion-desc">Starting point. No prior validation needed.</div>
+          </div>
+          <div class="gate-criterion">
+            <div class="gate-criterion-label">Exit criteria (to unlock Gate 2)</div>
+            <div class="gate-criterion-value">10 paid · $400 MRR</div>
+            <div class="gate-criterion-desc">Proves CBO can convert. Proves product holds up under early load.</div>
+          </div>
+        </div>
+
+        <div class="gate-section">
+          <div class="gate-section-label">Pre-conditions before any outreach</div>
+          <ul class="gate-tasks">
+            <li>Fix slide 05 of the sales deck (currently a placeholder)</li>
+            <li>Get a clear product gap list from CEO — what's stable, what's not</li>
+            <li>Brief all founder's studio network branch managers — they're first reference customers</li>
+            <li>Verify the 7 high-priority leads from scraped list</li>
+            <li>Set up CRM with stages: Lead → Contacted → Responded → Demo → Trial → Paid</li>
+          </ul>
+        </div>
+
+        <div class="gate-section">
+          <div class="gate-section-label">Activities in this phase</div>
+          <ul class="gate-tasks">
+            <li>Warm network conversions first — founder's studio network network + your existing contacts</li>
+            <li>Cold outreach to 41 scraped leads using 4-touch IG/WA sequence</li>
+            <li>5 new leads sourced per day, all manually</li>
+            <li>2–3 discovery calls per week minimum</li>
+            <li>Personally hand-hold every single onboarding — no automation yet</li>
+          </ul>
+        </div>
+
+        <div class="gate-section">
+          <div class="gate-section-label">Spend allocation</div>
+          <ul class="gate-tasks">
+            <li>Tools & subscriptions (WA Business, Canva, basic CRM): ~$100/mo</li>
+            <li>Photography for founder's studio network case study (one-time): ~$200</li>
+            <li>Light Meta ads test (last 4 weeks of phase only): ~$66/mo</li>
+            <li>Trial month subsidy for first 3–5 reference customers: ~$100 one-time</li>
+          </ul>
+        </div>
+
+        <div class="gate-unlock"><strong>Unlocks at 10 paid + $400 MRR.</strong> Bring revised budget request to CEO with conversion data and channel performance from this phase.</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="cal red">
+    <div class="cal-label">Do not skip these checks</div>
+    <p>Before requesting Gate 2 budget, you need answers to: <strong>(1) What's your trial-to-paid conversion rate?</strong> If below 50%, the product or onboarding has an issue — fix before scaling. <strong>(2) What's your average sales cycle in days?</strong> Anchors what's possible at scale. <strong>(3) Which channel produced the first 10?</strong> If 9 of 10 came from founder's studio network network alone, cold outreach hasn't been validated and Gate 2 ads budget is premature.</p>
+  </div>
+</section>
+
+<hr class="div">
+
+<!-- GATE 2 -->
+<section id="gate2">
+  <div class="s-eyebrow">
+    <span class="s-num">05</span>
+    <span class="s-tag">Phase two</span>
+  </div>
+  <h2 class="s-title">Gate 2 — Engine</h2>
+  <p class="s-sub">Scale outreach to a daily rhythm. Add paid ads test. Build content cadence. Prove repeatability.</p>
+
+  <div class="gates">
+    <div class="gate gate-2">
+      <div class="gate-top">
+        <span class="gate-pill">Phase 2</span>
+        <div>
+          <div class="gate-name">Engine</div>
+          <div class="gate-sub">Turn the playbook into a repeatable daily machine, with second channel layered in.</div>
+        </div>
+        <span class="gate-budget">$650–$800/mo</span>
+      </div>
+      <div class="gate-body">
+        <div class="gate-criteria">
+          <div class="gate-criterion">
+            <div class="gate-criterion-label">Entry criteria</div>
+            <div class="gate-criterion-value">10 paid · $400 MRR</div>
+            <div class="gate-criterion-desc">Playbook proven. Trial→paid above 50%. Sales cycle understood.</div>
+          </div>
+          <div class="gate-criterion">
+            <div class="gate-criterion-label">Exit criteria (to unlock Gate 3)</div>
+            <div class="gate-criterion-value">40 paid · $1.6K MRR</div>
+            <div class="gate-criterion-desc">Proves channels scale. Proves the company can absorb new customer onboarding volume.</div>
+          </div>
+        </div>
+
+        <div class="gate-section">
+          <div class="gate-section-label">New activities unlocked in this phase</div>
+          <ul class="gate-tasks">
+            <li>Meta ads test live — $265–$330/mo on the capital city studio owner lookalike</li>
+            <li>Content cadence formal: 2 LinkedIn posts/week (the CBO), 3 IG/week (platform for business)</li>
+            <li>First case study video featuring 1–2 paid customers</li>
+            <li>Referral program informal — start asking every onboarded customer</li>
+            <li>Friday pipeline review formal — track 5 metrics every week</li>
+          </ul>
+        </div>
+
+        <div class="gate-section">
+          <div class="gate-section-label">Spend allocation</div>
+          <ul class="gate-tasks">
+            <li>Tools (CRM upgrade, email marketing): ~$130/mo</li>
+            <li>Meta ads test: $265–$330/mo (target CAC under ~$33)</li>
+            <li>Content production (freelance creator, part-time): ~$200/mo</li>
+            <li>Referral incentives (1 month free per successful referral, revenue offset): ~$66/mo</li>
+          </ul>
+        </div>
+
+        <div class="gate-unlock"><strong>Unlocks at 40 paid + $1.6K MRR.</strong> Show CEO: CAC per channel, referral rate, ads ROI. Request Gate 3 budget for events + geographic expansion.</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="cal orange">
+    <div class="cal-label">What proof looks like at exit</div>
+    <p>At 40 paid you should be able to answer: ads CAC (target under ~$33), referral rate (target 20%+ of new leads coming from referrals), and trial-to-paid conversion (target 60%+). If any of these are off-target, stay in Phase 2 and fix before unlocking Phase 3.</p>
+  </div>
+</section>
+
+<hr class="div">
+
+<!-- GATE 3 -->
+<section id="gate3">
+  <div class="s-eyebrow">
+    <span class="s-num">06</span>
+    <span class="s-tag">Phase three</span>
+  </div>
+  <h2 class="s-title">Gate 3 — Scale</h2>
+  <p class="s-sub">Geographic expansion. First major event. PR push. Partnership outreach. This is where compounding kicks in.</p>
+
+  <div class="gates">
+    <div class="gate gate-3">
+      <div class="gate-top">
+        <span class="gate-pill">Phase 3</span>
+        <div>
+          <div class="gate-name">Scale</div>
+          <div class="gate-sub">Multiply proven channels. Expand cities. First major event. Begin BD hire conversation.</div>
+        </div>
+        <span class="gate-budget">$1.3K–$2K/mo</span>
+      </div>
+      <div class="gate-body">
+        <div class="gate-criteria">
+          <div class="gate-criterion">
+            <div class="gate-criterion-label">Entry criteria</div>
+            <div class="gate-criterion-value">40 paid · $1.6K MRR</div>
+            <div class="gate-criterion-desc">Channels proven. CAC under control. Referral engine live.</div>
+          </div>
+          <div class="gate-criterion">
+            <div class="gate-criterion-label">Exit criteria (to unlock Gate 4)</div>
+            <div class="gate-criterion-value">120 paid · $4.8K MRR</div>
+            <div class="gate-criterion-desc">Mature pipeline. Multi-city presence. Ready for flagship event + Series A signal.</div>
+          </div>
+        </div>
+
+        <div class="gate-section">
+          <div class="gate-section-label">New activities unlocked in this phase</div>
+          <ul class="gate-tasks">
+            <li>First studio owner event — 20-person founder-network-hosted brunch in the capital city</li>
+            <li>Scaled seminar (50–80 attendees) — "Running a Wellness Studio" with paid speakers</li>
+            <li>Geographic expansion: [suburb city] and [secondary city A] launch via founder's studio network network</li>
+            <li>Google Search ads layer added (high-intent keywords)</li>
+            <li>Partnership outreach begins (equipment vendors, YTT schools)</li>
+            <li>BD hire conversation with CEO — part-time or intern by mid-Phase 3 if pace requires</li>
+            <li>Referral program formalized with public mechanics</li>
+          </ul>
+        </div>
+
+        <div class="gate-section">
+          <div class="gate-section-label">Spend allocation</div>
+          <ul class="gate-tasks">
+            <li>Meta + Google ads (scaled, multi-city): ~$650–$800/mo</li>
+            <li>Content production: ~$265/mo</li>
+            <li>the capital city brunch event: $330 one-time</li>
+            <li>Wellness Studio seminar (50–80 attendees): $1K one-time</li>
+            <li>Referral incentive pool: ~$130/mo</li>
+            <li>Partnership co-marketing budget: ~$130/mo</li>
+          </ul>
+        </div>
+
+        <div class="gate-unlock"><strong>Unlocks at 120 paid + $4.8K MRR.</strong> By this point the platform is the recognized boutique fitness platform in the capital city. Request Gate 4 budget for flagship event + PR push.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<hr class="div">
+
+<!-- GATE 4 -->
+<section id="gate4">
+  <div class="s-eyebrow">
+    <span class="s-num">07</span>
+    <span class="s-tag">Phase four</span>
+  </div>
+  <h2 class="s-title">Gate 4 — Close</h2>
+  <p class="s-sub">Final sprint. Flagship event. Major PR push. East Java + new geographies. Series A momentum builder.</p>
+
+  <div class="gates">
+    <div class="gate gate-4">
+      <div class="gate-top">
+        <span class="gate-pill">Phase 4</span>
+        <div>
+          <div class="gate-name">Close</div>
+          <div class="gate-sub">Final push to 300. Flagship event as the centerpiece. Year 2 already being planned.</div>
+        </div>
+        <span class="gate-budget">$2K–$2.7K/mo + event</span>
+      </div>
+      <div class="gate-body">
+        <div class="gate-criteria">
+          <div class="gate-criterion">
+            <div class="gate-criterion-label">Entry criteria</div>
+            <div class="gate-criterion-value">120 paid · $4.8K MRR</div>
+            <div class="gate-criterion-desc">Recognized leader in the capital city boutique fitness. Multi-channel mature.</div>
+          </div>
+          <div class="gate-criterion">
+            <div class="gate-criterion-label">Exit criteria (goal)</div>
+            <div class="gate-criterion-value">300 paid · ~$12K MRR</div>
+            <div class="gate-criterion-desc">Year 1 goal achieved. Plan year 2 alongside Series A.</div>
+          </div>
+        </div>
+
+        <div class="gate-section">
+          <div class="gate-section-label">New activities unlocked in this phase</div>
+          <ul class="gate-tasks">
+            <li>Flagship Annual Community Day — major PR moment, all paid studios invited</li>
+            <li>[secondary city C] seminar — replicate proven format in East Java</li>
+            <li>PR consultant engagement — Tech in Asia, DailySocial, Kontan features</li>
+            <li>Mid-tier IG fitness creator paid collabs (3 creators)</li>
+            <li>Annual prepay incentive — discounted annual plans for last-quarter conversions</li>
+            <li>Year 2 planning starts month 11 — don't wait for the finish line</li>
+          </ul>
+        </div>
+
+        <div class="gate-section">
+          <div class="gate-section-label">Spend allocation</div>
+          <ul class="gate-tasks">
+            <li>Meta + Google + LinkedIn ads (multi-city scale): ~$1K–$1.2K/mo</li>
+            <li>Content + creator collabs: ~$530/mo</li>
+            <li>PR consultant (1 month engagement): $650–$1K one-time</li>
+            <li>[secondary city C] seminar: $1.2K one-time</li>
+            <li>Annual Community Day (flagship): $2K–$2.7K one-time</li>
+            <li>Referral payouts (high volume): ~$265/mo</li>
+          </ul>
+        </div>
+
+        <div class="gate-unlock"><strong>Final goal: 300 paid + ~$12K MRR.</strong> By month 12, referrals + events generate 50%+ of new leads. The machine runs without needing your manual outreach driving every deal.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<hr class="div">
+
+<!-- 08 CHANNEL MIX -->
+<section id="channels">
+  <div class="s-eyebrow">
+    <span class="s-num">08</span>
+    <span class="s-tag">Multi-channel</span>
+  </div>
+  <h2 class="s-title">The 6-channel mix</h2>
+  <p class="s-sub">Channels layer in across phases. Don't try everything at once — each one needs time to prove ROI before scaling.</p>
+
+  <div class="channel-mix">
+    <div class="ch-row">
+      <div class="ch-icon ch-1">01</div>
+      <div>
+        <div class="ch-name">Direct outreach</div>
+        <div class="ch-name-sub">IG DM + WhatsApp · Phase 1+</div>
+      </div>
+      <div class="ch-desc">Your foundation channel from day 1. Personalised 4-touch sequence. Highest conversion per contact, lowest scale ceiling. 5 new leads/day, ~50 outreach actions/week. Powers Phase 1 entirely; remains the highest-quality channel throughout.</div>
+      <div class="ch-share">35% of paid</div>
+    </div>
+    <div class="ch-row">
+      <div class="ch-icon ch-2">02</div>
+      <div>
+        <div class="ch-name">Referral program</div>
+        <div class="ch-name-sub">Existing studios · Phase 2+</div>
+      </div>
+      <div class="ch-desc">Starts informally in Phase 1 from your first paid customer (just by asking). Formalise with "1 month free per successful referral" in Phase 2. By Phase 3 generates 30%+ of new leads at near-zero CAC. The most defensible channel — trust transfers.</div>
+      <div class="ch-share">25% of paid</div>
+    </div>
+    <div class="ch-row">
+      <div class="ch-icon ch-3">03</div>
+      <div>
+        <div class="ch-name">Paid ads</div>
+        <div class="ch-name-sub">Meta + Google · Phase 2+</div>
+      </div>
+      <div class="ch-desc">Small Meta test in late Phase 1 ($66). Scales to $265–$330/mo in Phase 2 once CAC is proven. Google Search added in Phase 3. Generates inbound demos — the unlock that makes 300 achievable solo.</div>
+      <div class="ch-share">15% of paid</div>
+    </div>
+    <div class="ch-row">
+      <div class="ch-icon ch-4">04</div>
+      <div>
+        <div class="ch-name">Events & activations</div>
+        <div class="ch-name-sub">Roundtables → seminars · Phase 3+</div>
+      </div>
+      <div class="ch-desc">High-touch, high-trust. One-to-many conversion in a single afternoon. 4 events total: small brunch (Phase 3 start), 50–80 person seminar (Phase 3), [secondary city C] replica (Phase 4), flagship Community Day (Phase 4 close).</div>
+      <div class="ch-share">15% of paid</div>
+    </div>
+    <div class="ch-row">
+      <div class="ch-icon ch-5">05</div>
+      <div>
+        <div class="ch-name">Content & PR</div>
+        <div class="ch-name-sub">LinkedIn, IG, press · Phase 2+</div>
+      </div>
+      <div class="ch-desc">Your LinkedIn already works — keep building. Personal brand + founder's studio network case + the CEO's CEO voice. Aim for 2 mid-tier media features (Tech in Asia, DailySocial) by Phase 4. Long-term moat.</div>
+      <div class="ch-share">7% of paid (last touch)</div>
+    </div>
+    <div class="ch-row">
+      <div class="ch-icon ch-6">06</div>
+      <div>
+        <div class="ch-name">Strategic partnerships</div>
+        <div class="ch-name-sub">Vendors, YTT, gyms · Phase 3+</div>
+      </div>
+      <div class="ch-desc">Pilates equipment vendors, yoga teacher training schools, instructor certification programs all have direct access to your buyer. Revenue-share or co-marketing. Build in Phase 3, scale in Phase 4.</div>
+      <div class="ch-share">3% of paid</div>
+    </div>
+  </div>
+</section>
+
+<hr class="div">
+
+<!-- 09 BUDGET -->
+<section id="budget">
+  <div class="s-eyebrow">
+    <span class="s-num">09</span>
+    <span class="s-tag">For CEO approval</span>
+  </div>
+  <h2 class="s-title">Budget — phase by phase</h2>
+  <p class="s-sub">Total 12-month budget: $12K–$17K. Released in tranches as milestones are hit. No upfront approval needed for the whole amount.</p>
+
+  <div class="budget-section">
+    <div class="bs-header">
+      <div>
+        <div class="bs-name">Gate 1 — Foundation</div>
+        <div class="bs-sub">0 → 10 paid studios · ~Mo 1–3</div>
+      </div>
+      <div class="bs-total">$200–$330 / month</div>
+    </div>
+    <table class="btab">
+      <thead>
+        <tr><th>Line item</th><th>What</th><th>Monthly</th></tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><span class="bcat bcat-tools">Tools</span></td>
+          <td>WA Business API, Canva Pro, basic CRM (Notion or HubSpot free)</td>
+          <td>$100</td>
+        </tr>
+        <tr>
+          <td><span class="bcat bcat-content">Content</span></td>
+          <td>One-time photography day for founder's studio network case study (split across 3 months)</td>
+          <td>$66</td>
+        </tr>
+        <tr>
+          <td><span class="bcat bcat-ads">Ads test</span></td>
+          <td>Small Meta test in last 4 weeks only — ~$7/day for 10 days</td>
+          <td>$33–$66</td>
+        </tr>
+        <tr>
+          <td><span class="bcat bcat-incent">Incentive</span></td>
+          <td>Trial subsidy for 3–5 reference customers (founder-network-related)</td>
+          <td>$33–$100</td>
+        </tr>
+        <tr><td colspan="2">Phase 1 total (3 months)</td><td>~$600–$1K</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="budget-section">
+    <div class="bs-header">
+      <div>
+        <div class="bs-name">Gate 2 — Engine</div>
+        <div class="bs-sub">10 → 40 paid · ~Mo 3–6</div>
+      </div>
+      <div class="bs-total">$650–$800 / month</div>
+    </div>
+    <table class="btab">
+      <thead>
+        <tr><th>Line item</th><th>What</th><th>Monthly</th></tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><span class="bcat bcat-ads">Meta ads</span></td>
+          <td>Scaled lookalike audiences. Target CAC $20–$33.</td>
+          <td>$265–$330</td>
+        </tr>
+        <tr>
+          <td><span class="bcat bcat-content">Content</span></td>
+          <td>Part-time freelance creator: 8 posts/mo + 1 case study video</td>
+          <td>$200</td>
+        </tr>
+        <tr>
+          <td><span class="bcat bcat-tools">Tools upgrade</span></td>
+          <td>CRM upgrade (HubSpot Starter), email tool</td>
+          <td>$130</td>
+        </tr>
+        <tr>
+          <td><span class="bcat bcat-incent">Referrals</span></td>
+          <td>1-month-free incentives (revenue offset)</td>
+          <td>$66–$130</td>
+        </tr>
+        <tr><td colspan="2">Phase 2 total (3 months)</td><td>~$2K–$2.4K</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="budget-section">
+    <div class="bs-header">
+      <div>
+        <div class="bs-name">Gate 3 — Scale</div>
+        <div class="bs-sub">40 → 120 paid · ~Mo 6–9</div>
+      </div>
+      <div class="bs-total">$1.3K–$2K / month</div>
+    </div>
+    <table class="btab">
+      <thead>
+        <tr><th>Line item</th><th>What</th><th>Monthly</th></tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><span class="bcat bcat-ads">Meta + Google ads</span></td>
+          <td>Multi-city ads. Add Google Search for high-intent keywords.</td>
+          <td>$650–$800</td>
+        </tr>
+        <tr>
+          <td><span class="bcat bcat-content">Content</span></td>
+          <td>Creator continued + first paid IG collab</td>
+          <td>$265</td>
+        </tr>
+        <tr>
+          <td><span class="bcat bcat-event">the capital city brunch</span></td>
+          <td>20-person studio owner gathering (one-off, month 1 of phase)</td>
+          <td>$330 (one-off)</td>
+        </tr>
+        <tr>
+          <td><span class="bcat bcat-event">Seminar</span></td>
+          <td>50–80 person "Running a Wellness Studio" seminar (one-off, month 2 of phase)</td>
+          <td>$1K (one-off)</td>
+        </tr>
+        <tr>
+          <td><span class="bcat bcat-incent">Referrals + partnerships</span></td>
+          <td>Scaled referrals + partnership co-marketing</td>
+          <td>$200–$265</td>
+        </tr>
+        <tr><td colspan="2">Phase 3 total (3 months)</td><td>~$4.7K–$6K</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="budget-section">
+    <div class="bs-header">
+      <div>
+        <div class="bs-name">Gate 4 — Close</div>
+        <div class="bs-sub">120 → 300 paid · ~Mo 9–12</div>
+      </div>
+      <div class="bs-total">$2K–$2.7K / month</div>
+    </div>
+    <table class="btab">
+      <thead>
+        <tr><th>Line item</th><th>What</th><th>Monthly</th></tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><span class="bcat bcat-ads">Ads (final push)</span></td>
+          <td>Meta + Google + LinkedIn, multi-city, peak spend</td>
+          <td>$1K–$1.2K</td>
+        </tr>
+        <tr>
+          <td><span class="bcat bcat-content">Content + creators</span></td>
+          <td>Continued content + 3 mid-tier creator collabs</td>
+          <td>$400–$530</td>
+        </tr>
+        <tr>
+          <td><span class="bcat bcat-pr">PR</span></td>
+          <td>Freelance PR consultant for Tech in Asia / DailySocial features (one-off)</td>
+          <td>$650–$1K (one-off)</td>
+        </tr>
+        <tr>
+          <td><span class="bcat bcat-event">[secondary city C] seminar</span></td>
+          <td>Replicate the capital city format in East Java (one-off)</td>
+          <td>$1.2K (one-off)</td>
+        </tr>
+        <tr>
+          <td><span class="bcat bcat-event">Annual Community Day</span></td>
+          <td>Flagship anniversary event — major PR moment (one-off)</td>
+          <td>$2K–$2.7K (one-off)</td>
+        </tr>
+        <tr>
+          <td><span class="bcat bcat-incent">Referrals + incentives</span></td>
+          <td>High-volume referral payouts + annual prepay discount campaigns</td>
+          <td>$265–$400</td>
+        </tr>
+        <tr><td colspan="2">Phase 4 total (3 months)</td><td>~$11K–$12.3K</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="cal green">
+    <div class="cal-label">Total 12-month budget</div>
+    <p><strong>$12K–$17K across 12 months</strong> (~$1K–$1.5K/month average). At 300 paid studios × $40 MRR = ~$12K new monthly recurring revenue. The full marketing budget pays itself back in 1.3 months of run-rate MRR at the end of the year. Blended CAC across all channels: ~~$53 per acquired studio — strong for Southeast Asian B2B SaaS.</p>
+  </div>
+
+  <div class="cal red">
+    <div class="cal-label">Budget guardrails — promise to the CEO</div>
+    <p><strong>(1) No automatic budget release between phases.</strong> Each gate requires a fresh approval based on hard milestones. <strong>(2) Monthly CAC review per channel.</strong> Any channel with CAC >2x target after 2 months → paused and reallocated. <strong>(3) Hard ceiling per channel.</strong> Never more than 40% of monthly spend on any single platform. <strong>(4) No vanity events.</strong> Every event tracked: attendees, conversions, attributed revenue.</p>
+  </div>
+</section>
+
+<hr class="div">
+
+<!-- 10 DAILY -->
+<section id="daily">
+  <div class="s-eyebrow">
+    <span class="s-num">10</span>
+    <span class="s-tag">Execution</span>
+  </div>
+  <h2 class="s-title">Your daily rhythm</h2>
+  <p class="s-sub">Non-negotiable from Gate 1 onwards. The pipeline dies if you stop feeding it.</p>
+
+  <div class="schedule">
+    <div class="sc-header"><div class="sc-title">Daily sales block — weekdays</div></div>
+    <div class="sc-row">
+      <div class="sc-time">08:30 – 09:30</div>
+      <div class="sc-task"><strong>Lead sourcing.</strong> 5 new studios via ClassPass, IG hashtags, Google Maps, the platform's own host data. Log in CRM with priority + IG handle. <span class="sc-badge b-orange">non-negotiable</span></div>
+    </div>
+    <div class="sc-row">
+      <div class="sc-time">09:30 – 10:30</div>
+      <div class="sc-task"><strong>Follow-ups & replies.</strong> Day-3 and day-7 touches go out. Check DM replies, respond same-day.</div>
+    </div>
+    <div class="sc-row">
+      <div class="sc-time">10:30 – 12:00</div>
+      <div class="sc-task"><strong>Discovery calls.</strong> Block for scheduled calls. If none, do warm outreach or content prep. <span class="sc-badge b-green">calls close deals</span></div>
+    </div>
+    <div class="sc-row">
+      <div class="sc-time">12:00 – 13:00</div>
+      <div class="sc-task"><strong>Lunch + walk.</strong> Protect this. Burnout is the single biggest risk to hitting 300.</div>
+    </div>
+    <div class="sc-row">
+      <div class="sc-time">13:00 – 14:00</div>
+      <div class="sc-task"><strong>New outreach.</strong> Day-1 touches to yesterday's 5 new leads. Always personalise.</div>
+    </div>
+    <div class="sc-row">
+      <div class="sc-time">14:00 – 14:30</div>
+      <div class="sc-task"><strong>CRM admin.</strong> Update stages, log notes, set next actions. <span class="sc-badge b-gray">15 min max</span></div>
+    </div>
+    <div class="sc-row">
+      <div class="sc-time">14:30 – 15:30</div>
+      <div class="sc-task"><strong>Multi-channel work (Phase 2+).</strong> Mon: content. Tue: ads review. Wed: events. Thu: partnerships. Fri: review. <span class="sc-badge b-blue">strategic</span></div>
+    </div>
+    <div class="sc-row">
+      <div class="sc-time">Friday PM</div>
+      <div class="sc-task"><strong>Weekly review.</strong> Log metrics. Identify bottleneck. Adjust one variable. <span class="sc-badge b-orange">every friday</span></div>
+    </div>
+  </div>
+</section>
+
+<hr class="div">
+
+<!-- 11 OUTREACH -->
+<section id="outreach">
+  <div class="s-eyebrow">
+    <span class="s-num">11</span>
+    <span class="s-tag">The sequence</span>
+  </div>
+  <h2 class="s-title">4-touch outreach sequence</h2>
+  <p class="s-sub">14 days, 4 touches. IG DM first, WhatsApp second. This is how boutique studio owners actually communicate.</p>
+
+  <div class="schedule">
+    <div class="sc-header"><div class="sc-title">Per-studio sequence</div></div>
+    <div class="sc-row">
+      <div class="sc-time">Day 1</div>
+      <div class="sc-task"><strong>IG DM — warm opener.</strong> Short, specific, no pitch. Reference something real. Ask one question. <span class="sc-badge b-orange">IG DM</span></div>
+    </div>
+    <div class="sc-row">
+      <div class="sc-time">Day 3</div>
+      <div class="sc-task"><strong>WhatsApp intro.</strong> If they replied → move convo to WA. If not → introduce yourself on WA. <span class="sc-badge b-green">WhatsApp</span></div>
+    </div>
+    <div class="sc-row">
+      <div class="sc-time">Day 7</div>
+      <div class="sc-task"><strong>Value message + deck.</strong> Send PDF deck with outcome-framed note. Offer 20-min call. <span class="sc-badge b-green">WhatsApp</span></div>
+    </div>
+    <div class="sc-row">
+      <div class="sc-time">Day 14</div>
+      <div class="sc-task"><strong>Final follow-up.</strong> Low pressure, easy opt-out. Closes a real % of non-responders. <span class="sc-badge b-gray">WhatsApp</span></div>
+    </div>
+  </div>
+</section>
+
+<hr class="div">
+
+<!-- 12 DISCOVERY -->
+<section id="discovery">
+  <div class="s-eyebrow">
+    <span class="s-num">12</span>
+    <span class="s-tag">The call</span>
+  </div>
+  <h2 class="s-title">Discovery call framework</h2>
+  <p class="s-sub">20 minutes. No slides on first call. Listen more than you talk.</p>
+
+  <div class="schedule">
+    <div class="sc-header"><div class="sc-title">20-minute structure</div></div>
+    <div class="sc-row">
+      <div class="sc-time">Min 0–2</div>
+      <div class="sc-task"><strong>Context set.</strong> "Aku gak mau jualan apapun hari ini — aku cuma mau ngerti situasi kalian dulu."</div>
+    </div>
+    <div class="sc-row">
+      <div class="sc-time">Min 2–8</div>
+      <div class="sc-task"><strong>Q1: Current booking process.</strong> Walk me through DM → check-in. Don't interrupt.</div>
+    </div>
+    <div class="sc-row">
+      <div class="sc-time">Min 8–13</div>
+      <div class="sc-task"><strong>Q2: New member acquisition.</strong> Where do they come from? Reveals bottleneck type.</div>
+    </div>
+    <div class="sc-row">
+      <div class="sc-time">Min 13–17</div>
+      <div class="sc-task"><strong>Q3: Admin time cost.</strong> Hours/week on manual booking? Quantify the pain.</div>
+    </div>
+    <div class="sc-row">
+      <div class="sc-time">Min 17–20</div>
+      <div class="sc-task"><strong>Value match + next step.</strong> Match what you heard. Propose trial. Never leave without next action.</div>
+    </div>
+  </div>
+
+  <div class="cal green">
+    <div class="cal-label">Two bottleneck types — pitch accordingly</div>
+    <p><strong>Bottleneck = admin ops:</strong> Lead with booking + scheduling + payment automation. "Save X jam/minggu yang bisa dipakai isi kelas."<br><strong>Bottleneck = growth:</strong> Lead with discovery via the platform's 200K monthly active users on consumer side. "Member baru datang tanpa bayar ads."</p>
+  </div>
+</section>
+
+<hr class="div">
+
+<!-- 13 CLOSE -->
+<section id="close">
+  <div class="s-eyebrow">
+    <span class="s-num">13</span>
+    <span class="s-tag">The close</span>
+  </div>
+  <h2 class="s-title">Closing & tier strategy</h2>
+  <p class="s-sub">Always lead with Premium. Free tier removes friction — it's not the destination.</p>
+
+  <table class="ctab">
+    <thead>
+      <tr><th>Feature</th><th>Free</th><th>Premium · $40/mo</th></tr>
+    </thead>
+    <tbody>
+      <tr><td>Basic activity management</td><td class="ck">✓</td><td class="ck hl">✓</td></tr>
+      <tr><td>Recurring activity / seating plan</td><td class="cx">—</td><td class="ck hl">✓</td></tr>
+      <tr><td>Advanced analytics</td><td class="cx">—</td><td class="ck hl">✓</td></tr>
+      <tr><td>Membership pass</td><td>Max 5</td><td class="hl">Unlimited</td></tr>
+      <tr><td>Voucher codes</td><td>Max 5</td><td class="hl">Unlimited</td></tr>
+      <tr><td>Credits pass + pass subscription</td><td class="cx">—</td><td class="ck hl">✓</td></tr>
+      <tr><td>Chat channels + announcements</td><td class="cx">—</td><td class="ck hl">✓</td></tr>
+      <tr><td>Priority support + verified badge</td><td class="cx">—</td><td class="ck hl">✓</td></tr>
+      <tr><td>Instant withdrawal</td><td class="cx">—</td><td class="ck hl">✓</td></tr>
+    </tbody>
+  </table>
+
+  <div class="cal orange">
+    <div class="cal-label">Closing line that works</div>
+    <p>"Daripada aku jelasin terus, gimana kalau kalian coba langsung 30 hari — gratis, no strings. Kita setup dalam 7 hari, kalian bisa lihat sendiri bedanya. Kalau gak cocok, ya udah, gak ada yang hilang."</p>
+  </div>
+</section>
+
+<hr class="div">
+
+<!-- 14 MESSAGES -->
+<section id="messages">
+  <div class="s-eyebrow">
+    <span class="s-num">14</span>
+    <span class="s-tag">Templates</span>
+  </div>
+  <h2 class="s-title">Message templates</h2>
+  <p class="s-sub">Copy, personalise, send. Never send a template cold — always swap the [brackets].</p>
+
+  <div class="msg">
+    <div class="msg-h">
+      <span class="msg-l">Touch 1 — IG DM opener</span>
+      <span class="msg-c ch-ig">Instagram DM</span>
+    </div>
+    <div class="msg-b">Hei [Name]! Liat konten [studio name] di IG — [something specific]. Nanya dong, kalian masih handle booking lewat DM atau udah pakai sistem tertentu?</div>
+  </div>
+
+  <div class="msg">
+    <div class="msg-h">
+      <span class="msg-l">Touch 3 — Value message + deck</span>
+      <span class="msg-c ch-wa">WhatsApp</span>
+    </div>
+    <div class="msg-b">Hei [Name]! Aku attach deck the platform for studios di sini. Yang paling relevan buat [Studio Name] kayaknya bagian soal [specific pain point].
+
+Kalau mau ngobrol 20 menit, aku available [days]. Gak ada pressure — aku lebih pengen denger gimana operasional kalian sekarang.</div>
+  </div>
+
+  <div class="msg">
+    <div class="msg-h">
+      <span class="msg-l">Referral ask — to happy paid studio</span>
+      <span class="msg-c ch-wa">WhatsApp</span>
+    </div>
+    <div class="msg-b">Hei [Name]! Glad [Studio Name] udah jalan lancar di the platform 🙌. Aku mau nanya — ada studio owner lain yang kamu kenal yang masih handle manual atau lagi nyari sistem yang bagus? Kalau ada yang kamu refer dan mereka jadi subscriber, kita kasih 1 bulan gratis buat [Studio Name].</div>
+  </div>
+
+  <div class="msg">
+    <div class="msg-h">
+      <span class="msg-l">Post-discovery — trial confirmation</span>
+      <span class="msg-c ch-wa">WhatsApp</span>
+    </div>
+    <div class="msg-b">Hei [Name]! Seneng ngobrol tadi. Aku setup 30-day free trial buat [Studio Name].
+
+Next steps:
+→ Day 1–2: Audit setup kalian
+→ Day 3–4: Branded site + payment live
+→ Day 5–6: Training 60 menit
+→ Day 7: Go live!
+
+Kalau ada pertanyaan langsung WA aku ya 🚀</div>
+  </div>
+</section>
+
+<hr class="div">
+
+<!-- 15 OBJECTIONS -->
+<section id="objections">
+  <div class="s-eyebrow">
+    <span class="s-num">15</span>
+    <span class="s-tag">Objections</span>
+  </div>
+  <h2 class="s-title">Objection handling</h2>
+  <p class="s-sub">Every objection is information. Engage directly — don't deflect.</p>
+
+  <div class="obj-list">
+    <div class="obj-card">
+      <div class="obj-q">Kita udah pake [incumbent competitor] / sistem lain.</div>
+      <div class="obj-a">Bagus — berarti kalian udah sadar pentingnya sistem. Yang beda dari the platform: kalian langsung masuk ke network 200K+ users aktif. [incumbent competitor] kasih tools, the platform kasih tools plus front door. Mau coba 30 hari sambil tetep pake yang sekarang dulu?</div>
+    </div>
+    <div class="obj-card">
+      <div class="obj-q">Mahal. Member kita belum banyak.</div>
+      <div class="obj-a">$40 itu kurang dari biaya 4 kelas drop-in. Kalau dalam 30 hari the platform save admin kalian 5 jam/minggu — udah balik modal. Trial gratis — kita buktiin dulu baru bayar.</div>
+    </div>
+    <div class="obj-card">
+      <div class="obj-q">Sistemnya stabil belum?</div>
+      <div class="obj-a">Valid — dan aku gak over-promise. Yang udah proven: booking, payment, scheduling, member management, dipake 1,800+ providers termasuk founder's studio network yang aku founder-nya sendiri. Yang masih kita improve: [be specific]. Kalau itu kritis buat kalian, kita bicarain timeline-nya jujur.</div>
+    </div>
+    <div class="obj-card">
+      <div class="obj-q">Gak ada waktu buat setup.</div>
+      <div class="obj-a">Tim kami yang handle audit, setup, training. 7 hari, gak perlu pause kelas. Kalau Day 7 belum live, bulan pertama gratis. Timing mana yang oke — minggu ini atau depan?</div>
+    </div>
+    <div class="obj-card">
+      <div class="obj-q">Bisa diskon?</div>
+      <div class="obj-a">Yang aku bisa: 30 hari trial gratis. Setelah itu kalau commit 3 bulan, kita bicarain. Diskon bulanan mengurangi nilai jangka panjang — lebih baik aku pastiin ROI dulu dalam trial.</div>
+    </div>
+  </div>
+</section>
+
+<hr class="div">
+
+<!-- 16 METRICS -->
+<section id="metrics">
+  <div class="s-eyebrow">
+    <span class="s-num">16</span>
+    <span class="s-tag">Accountability</span>
+  </div>
+  <h2 class="s-title">Weekly metrics</h2>
+  <p class="s-sub">Friday review, 30 minutes. Different metrics matter at different phases.</p>
+
+  <div class="kgrid">
+    <div class="kcard">
+      <div class="k-label">Leads added</div>
+      <div class="k-val orange">25+</div>
+      <div class="k-desc">5/day. Below 20 = sourcing problem.</div>
+    </div>
+    <div class="kcard">
+      <div class="k-label">Outreach sent</div>
+      <div class="k-val orange">50+</div>
+      <div class="k-desc">Across active sequences.</div>
+    </div>
+    <div class="kcard">
+      <div class="k-label">Response rate</div>
+      <div class="k-val">15%+</div>
+      <div class="k-desc">Below 10% = rewrite messaging.</div>
+    </div>
+    <div class="kcard">
+      <div class="k-label">Demo calls</div>
+      <div class="k-val">3–5</div>
+      <div class="k-desc">From responded leads.</div>
+    </div>
+    <div class="kcard">
+      <div class="k-label">Trials → paid</div>
+      <div class="k-val">60%+</div>
+      <div class="k-desc">Below 50% = onboarding/product issue.</div>
+    </div>
+    <div class="kcard">
+      <div class="k-label">CAC (Phase 2+)</div>
+      <div class="k-val">&lt;~$33</div>
+      <div class="k-desc">Per channel. Above 2× = kill channel.</div>
+    </div>
+  </div>
+
+  <div class="cal orange">
+    <div class="cal-label">The weekly review rule</div>
+    <p>Every Friday, look at the funnel. Find the biggest drop-off stage. <strong>Adjust one variable that week</strong> — not five. One change at a time so you know what moved the needle.</p>
+  </div>
+</section>
+
+<hr class="div">
+
+<!-- 17 RISKS -->
+<section id="risks">
+  <div class="s-eyebrow">
+    <span class="s-num">17</span>
+    <span class="s-tag">Risks</span>
+  </div>
+  <h2 class="s-title">Risks & mitigations</h2>
+  <p class="s-sub">Five things most likely to derail this plan. Plan for each before it happens.</p>
+
+  <ul class="tasks">
+    <li><span class="tdot red"></span><strong>Risk 1 — Product instability burns early customers.</strong> If onboarding fails for first 5–10 paid, word kills the playbook. <em>Mitigation:</em> Map exact gaps with CEO before Gate 1 starts. Refuse to sell unstable features.</li>
+    <li><span class="tdot red"></span><strong>Risk 2 — Burnout in Phase 2.</strong> Solo CBO running everything. <em>Mitigation:</em> Plan a part-time BD or intern by end of Phase 2 / start of Phase 3, before you're overloaded.</li>
+    <li><span class="tdot red"></span><strong>Risk 3 — Ads don't convert.</strong> If Meta CAC stays >~$53 after 2 months of optimization, channel is broken. <em>Mitigation:</em> Built-in kill switch — pause and reallocate to events.</li>
+    <li><span class="tdot red"></span><strong>Risk 4 — founder's studio network operational drag.</strong> Day job creep eats sales time. <em>Mitigation:</em> Strict time-boxing. Delegate founder's studio network ops to branch managers.</li>
+    <li><span class="tdot red"></span><strong>Risk 5 — Series A fundraising pulls you off sales.</strong> When [lead investor] gets deep, you're in deck mode. <em>Mitigation:</em> Build pipeline ahead of fundraising. Get the engine running before diligence.</li>
+  </ul>
+
+  <div class="cal orange">
+    <div class="cal-label">Honest summary for the CEO</div>
+    <p>300 studios in 12 months with one CBO and $12K–$17K is tight but achievable. The plan only works if: (1) product holds up under early customer load, (2) we hit each gate before scaling spend, (3) we hire support by end of Phase 2 if pace requires. The outcome-gated structure is the protection — we don't waste money on hypothetical scale. <strong>Build to hit 300. Be okay landing at 220 if the curve is slower than projected.</strong></p>
+  </div>
+</section>
+
+<div class="doc-foot">
+  <div class="foot-logo">GTM Playbook</div>
+  <div class="foot-note">the CBO · May 28, 2026 · Outcome-gated</div>
+</div>
+
+</main>
+</div>
+
+<script>
+document.querySelectorAll('.sb-link').forEach(link => {
+  link.addEventListener('click', e => {
+    e.preventDefault();
+    const target = document.querySelector(link.getAttribute('href'));
+    if (target) target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    document.querySelectorAll('.sb-link').forEach(l => l.classList.remove('active'));
+    link.classList.add('active');
+  });
+});
+
+const sections = document.querySelectorAll('section[id]');
+const observer = new IntersectionObserver(entries => {
+  entries.forEach(entry => {
+    if (entry.isIntersecting) {
+      const id = entry.target.id;
+      document.querySelectorAll('.sb-link').forEach(link => {
+        link.classList.toggle('active', link.getAttribute('href') === '#' + id);
+      });
+    }
+  });
+}, { threshold: 0.3 });
+sections.forEach(s => observer.observe(s));
+</script>
+
+</body>
+</html>

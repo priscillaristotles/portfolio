@@ -1,0 +1,833 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Priscilla Aristotles  -  Fractional Growth Partner</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600&family=Spline+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg:#F4F1EA;        /* off-white / warm paper */
+    --bg-2:#EBE7DC;      /* slightly deeper paper for alternating sections */
+    --ink:#23241F;       /* charcoal */
+    --ink-soft:#4A4B43;  /* muted charcoal */
+    --forest:#2C4A37;    /* deep forest green */
+    --forest-deep:#1E3327;
+    --beige:#C9A77C;     /* warm beige accent */
+    --beige-soft:#D9C4A6;
+    --line:#D8D2C4;      /* hairline */
+    --max:1180px;
+    --radius:4px;
+  }
+  *{margin:0;padding:0;box-sizing:border-box}
+  html{scroll-behavior:smooth}
+  body{
+    background:var(--bg);
+    color:var(--ink);
+    font-family:'Spline Sans',sans-serif;
+    font-size:17px;
+    line-height:1.65;
+    -webkit-font-smoothing:antialiased;
+    overflow-x:hidden;
+  }
+  .serif{font-family:'Fraunces',serif;}
+  .wrap{max-width:var(--max);margin:0 auto;padding:0 32px;}
+  a{color:inherit;text-decoration:none;}
+
+  /* ---- grain / texture overlay ---- */
+  body::before{
+    content:"";position:fixed;inset:0;pointer-events:none;z-index:9999;
+    opacity:.035;mix-blend-mode:multiply;
+    background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='120'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='2'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  }
+
+  /* ---- nav ---- */
+  nav{
+    position:fixed;top:0;left:0;right:0;z-index:100;
+    background:rgba(244,241,234,0.82);
+    backdrop-filter:blur(10px);
+    border-bottom:1px solid transparent;
+    transition:border-color .3s ease, background .3s ease;
+  }
+  nav.scrolled{border-color:var(--line);}
+  .nav-inner{max-width:var(--max);margin:0 auto;padding:18px 32px;display:flex;justify-content:space-between;align-items:center;}
+  .nav-logo{font-family:'Fraunces',serif;font-weight:600;font-size:19px;letter-spacing:-.01em;}
+  .nav-logo span{color:var(--forest);}
+  .nav-links{display:flex;gap:32px;align-items:center;}
+  .nav-links a{font-size:14px;color:var(--ink-soft);letter-spacing:.01em;transition:color .2s;position:relative;}
+  .nav-links a:hover{color:var(--forest);}
+  .nav-cta{
+    border:1px solid var(--forest);color:var(--forest)!important;
+    padding:8px 18px;border-radius:var(--radius);font-weight:500;
+    transition:all .25s ease;
+  }
+  .nav-cta:hover{background:var(--forest);color:var(--bg)!important;}
+  .nav-toggle{display:none;background:none;border:none;cursor:pointer;font-size:22px;color:var(--ink);}
+  @media(max-width:860px){
+    .nav-links{display:none;}
+    .nav-toggle{display:block;}
+  }
+
+  /* ---- reveal animation ---- */
+  .reveal{opacity:0;transform:translateY(24px);transition:opacity .9s cubic-bezier(.16,1,.3,1),transform .9s cubic-bezier(.16,1,.3,1);}
+  .reveal.in{opacity:1;transform:none;}
+
+  /* ---- hero ---- */
+  .hero{padding:190px 0 90px;position:relative;}
+  .hero-grid{display:grid;grid-template-columns:1.35fr .9fr;gap:64px;align-items:center;}
+  .eyebrow{
+    font-size:12.5px;letter-spacing:.22em;text-transform:uppercase;
+    color:var(--forest);font-weight:600;margin-bottom:26px;
+    display:flex;align-items:center;gap:12px;
+  }
+  .eyebrow::before{content:"";width:34px;height:1px;background:var(--beige);display:inline-block;}
+  .hero h1{
+    font-family:'Fraunces',serif;font-weight:500;
+    font-size:clamp(2.6rem,5.2vw,4.3rem);
+    line-height:1.02;letter-spacing:-.025em;margin-bottom:8px;
+  }
+  .hero .role{
+    font-family:'Fraunces',serif;font-style:italic;font-weight:400;
+    font-size:clamp(1.25rem,2.4vw,1.7rem);color:var(--forest);
+    margin-bottom:28px;letter-spacing:-.01em;
+  }
+  .hero .lede{font-size:18.5px;color:var(--ink-soft);max-width:30em;margin-bottom:18px;}
+  .hero .pathline{
+    font-size:13.5px;color:var(--ink-soft);letter-spacing:.01em;
+    border-left:2px solid var(--beige);padding-left:14px;margin-bottom:34px;
+  }
+  .hero .pathline b{color:var(--ink);font-weight:600;}
+  .supporting{
+    font-size:13px;letter-spacing:.04em;color:var(--ink-soft);
+    display:flex;flex-wrap:wrap;gap:10px 0;margin-bottom:38px;
+  }
+  .supporting span{position:relative;padding:0 16px;}
+  .supporting span:first-child{padding-left:0;}
+  .supporting span:not(:last-child)::after{content:"";position:absolute;right:0;top:50%;width:4px;height:4px;border-radius:50%;background:var(--beige);transform:translateY(-50%);}
+  .hero-actions{display:flex;gap:16px;flex-wrap:wrap;}
+  .btn-primary{
+    background:var(--forest);color:var(--bg);padding:14px 30px;border-radius:var(--radius);
+    font-weight:500;font-size:15px;letter-spacing:.01em;transition:all .25s ease;
+    display:inline-flex;align-items:center;gap:10px;
+  }
+  .btn-primary:hover{background:var(--forest-deep);transform:translateY(-2px);}
+  .btn-ghost{
+    padding:14px 28px;border:1px solid var(--line);border-radius:var(--radius);
+    font-weight:500;font-size:15px;color:var(--ink-soft);transition:all .25s;
+  }
+  .btn-ghost:hover{border-color:var(--ink);color:var(--ink);}
+
+  .hero-photo{position:relative;}
+  .hero-photo .frame{
+    position:relative;border-radius:6px;overflow:hidden;
+    box-shadow:0 30px 60px -28px rgba(35,36,31,.5);
+  }
+  .hero-photo img{width:100%;display:block;filter:grayscale(.18) contrast(1.02);}
+  .hero-photo .tag{
+    position:absolute;bottom:-18px;left:-18px;background:var(--bg);
+    border:1px solid var(--line);padding:14px 18px;border-radius:var(--radius);
+    box-shadow:0 14px 30px -18px rgba(35,36,31,.4);
+  }
+  .hero-photo .tag .num{font-family:'Fraunces',serif;font-size:26px;color:var(--forest);line-height:1;}
+  .hero-photo .tag .lbl{font-size:11px;letter-spacing:.06em;text-transform:uppercase;color:var(--ink-soft);margin-top:4px;}
+  @media(max-width:860px){
+    .hero-grid{grid-template-columns:1fr;gap:48px;}
+    .hero-photo{max-width:340px;margin:0 auto;}
+    .hero{padding:150px 0 60px;}
+  }
+
+  /* ---- background strip ---- */
+  .strip{background:var(--forest-deep);color:var(--bg);padding:26px 0;}
+  .strip .wrap{display:flex;align-items:center;gap:20px;justify-content:center;text-align:center;flex-wrap:wrap;}
+  .strip p{font-size:15px;letter-spacing:.01em;color:#D9D6CC;}
+  .strip .dot{width:5px;height:5px;border-radius:50%;background:var(--beige);}
+  .strip b{color:var(--bg);font-weight:500;}
+
+  /* ---- section scaffold ---- */
+  section{padding:96px 0;}
+  .sec-head{margin-bottom:54px;max-width:46em;}
+  .sec-kicker{
+    font-size:12.5px;letter-spacing:.2em;text-transform:uppercase;
+    color:var(--forest);font-weight:600;margin-bottom:18px;
+    display:flex;align-items:center;gap:12px;
+  }
+  .sec-kicker::before{content:"";width:30px;height:1px;background:var(--beige);}
+  .sec-head h2{
+    font-family:'Fraunces',serif;font-weight:500;
+    font-size:clamp(1.9rem,3.6vw,2.7rem);letter-spacing:-.02em;line-height:1.08;
+  }
+  .sec-head p{margin-top:18px;color:var(--ink-soft);font-size:18px;}
+
+  /* ---- selected results ---- */
+  #results{background:var(--bg-2);}
+  .stats{display:grid;grid-template-columns:repeat(3,1fr);gap:1px;background:var(--line);border:1px solid var(--line);border-radius:6px;overflow:hidden;}
+  .stat{background:var(--bg-2);padding:38px 30px;transition:background .3s;}
+  .stat:hover{background:var(--bg);}
+  .stat .figure{font-family:'Fraunces',serif;font-weight:500;font-size:clamp(2.1rem,3.4vw,2.8rem);color:var(--forest);line-height:1;letter-spacing:-.02em;}
+  .stat .desc{margin-top:14px;font-size:14.5px;color:var(--ink-soft);line-height:1.5;}
+  @media(max-width:760px){.stats{grid-template-columns:1fr 1fr;}}
+  @media(max-width:460px){.stats{grid-template-columns:1fr;}}
+
+  /* ---- about ---- */
+  .about-grid{display:grid;grid-template-columns:1fr 1.25fr;gap:64px;align-items:start;}
+  .about-grid h2{font-family:'Fraunces',serif;font-weight:500;font-size:clamp(1.7rem,3vw,2.3rem);letter-spacing:-.02em;line-height:1.15;}
+  .about-body p{margin-bottom:20px;color:var(--ink-soft);}
+  .about-body p:first-child{color:var(--ink);font-size:18px;}
+  .about-body .lead-set{margin-bottom:24px;}
+  .about-body .lead-set span{display:block;color:var(--ink);}
+  .about-body .lead-set span b{font-family:'Fraunces',serif;font-style:italic;font-weight:400;color:var(--forest);}
+  @media(max-width:860px){.about-grid{grid-template-columns:1fr;gap:30px;}}
+
+  /* ---- case studies ---- */
+  #cases{background:var(--bg-2);}
+  .case{
+    background:var(--bg);border:1px solid var(--line);border-radius:8px;
+    padding:48px;margin-bottom:34px;
+    box-shadow:0 18px 40px -34px rgba(35,36,31,.4);
+  }
+  .case-top{display:flex;justify-content:space-between;align-items:flex-start;gap:24px;margin-bottom:8px;flex-wrap:wrap;}
+  .case-no{font-family:'Fraunces',serif;font-style:italic;font-size:15px;color:var(--beige);}
+  .case h3{font-family:'Fraunces',serif;font-weight:500;font-size:clamp(1.5rem,2.6vw,2rem);letter-spacing:-.02em;line-height:1.12;max-width:18em;}
+  .case-meta{font-size:12.5px;letter-spacing:.05em;text-transform:uppercase;color:var(--ink-soft);text-align:right;}
+  .case-cols{display:grid;grid-template-columns:1fr 1fr;gap:40px;margin-top:30px;}
+  .case-block h4{font-size:12px;letter-spacing:.16em;text-transform:uppercase;color:var(--forest);font-weight:600;margin-bottom:14px;}
+  .case-block p{font-size:15.5px;color:var(--ink-soft);}
+  .case-block ul{list-style:none;}
+  .case-block li{font-size:15px;color:var(--ink-soft);padding-left:22px;position:relative;margin-bottom:9px;}
+  .case-block li::before{content:"";position:absolute;left:0;top:11px;width:7px;height:1.5px;background:var(--beige);}
+  .case-results li{color:var(--ink);}
+  .case-results li b{color:var(--forest);font-weight:600;}
+  @media(max-width:760px){.case-cols{grid-template-columns:1fr;gap:26px;}.case{padding:30px 24px;}}
+
+  /* ---- visual upload placeholders ---- */
+  .visuals{margin-top:34px;padding-top:30px;border-top:1px dashed var(--line);}
+  .visuals .v-label{font-size:12px;letter-spacing:.16em;text-transform:uppercase;color:var(--ink-soft);font-weight:600;margin-bottom:18px;}
+  .v-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:14px;}
+  .v-slot{
+    border:1.5px dashed var(--beige);border-radius:6px;
+    background:linear-gradient(135deg,rgba(201,167,124,.06),rgba(44,74,55,.04));
+    aspect-ratio:4/3;display:flex;flex-direction:column;align-items:center;justify-content:center;
+    text-align:center;padding:18px;transition:all .25s;cursor:default;
+  }
+  .v-slot:hover{border-color:var(--forest);background:linear-gradient(135deg,rgba(44,74,55,.08),rgba(201,167,124,.06));}
+  .v-slot .ic{font-size:20px;color:var(--beige);margin-bottom:10px;}
+  .v-slot .name{font-size:13.5px;color:var(--ink);font-weight:500;line-height:1.3;}
+  .v-slot .hint{font-size:11px;color:var(--ink-soft);margin-top:6px;letter-spacing:.03em;}
+  /* clickable cover tiles with preview image */
+  a.v-slot{text-decoration:none;cursor:pointer;padding:0;overflow:hidden;justify-content:flex-start;border-style:solid;border-width:1px;border-color:var(--line);position:relative;}
+  a.v-slot:hover{border-color:var(--forest);transform:translateY(-2px);box-shadow:0 8px 24px rgba(30,51,39,.12);}
+  a.v-slot .cover{width:100%;flex:1;display:block;}
+  a.v-slot .cover svg{width:100%;height:100%;display:block;}
+  a.v-slot .tile-foot{width:100%;padding:10px 14px;background:var(--white);border-top:1px solid var(--line);display:flex;align-items:center;justify-content:space-between;}
+  a.v-slot .tile-name{font-size:13px;color:var(--ink);font-weight:600;line-height:1.2;text-align:left;}
+  a.v-slot .tile-cta{font-size:11px;color:var(--forest);font-weight:600;white-space:nowrap;}
+  a.v-slot:hover .tile-cta{color:var(--beige);}
+
+  /* ---- what i do ---- */
+  .services{display:grid;grid-template-columns:1fr 1fr;gap:1px;background:var(--line);border:1px solid var(--line);border-radius:8px;overflow:hidden;}
+  .svc{background:var(--bg);padding:40px;transition:background .3s;position:relative;}
+  .svc:hover{background:var(--bg-2);}
+  .svc .svc-no{font-family:'Fraunces',serif;font-style:italic;font-size:14px;color:var(--beige);margin-bottom:14px;}
+  .svc h3{font-family:'Fraunces',serif;font-weight:500;font-size:1.4rem;letter-spacing:-.01em;margin-bottom:14px;}
+  .svc p{font-size:15px;color:var(--ink-soft);}
+  @media(max-width:760px){.services{grid-template-columns:1fr;}.svc{padding:30px 24px;}}
+
+  /* ---- why hire ---- */
+  #why{background:var(--forest-deep);color:var(--bg);}
+  #why .sec-kicker{color:var(--beige-soft);}
+  #why .sec-kicker::before{background:var(--beige);}
+  #why .sec-head h2{color:var(--bg);}
+  .why-grid{display:grid;grid-template-columns:1fr 1fr;gap:48px 56px;}
+  .why-item{border-top:1px solid rgba(217,196,166,.28);padding-top:24px;}
+  .why-item h3{font-family:'Fraunces',serif;font-weight:500;font-size:1.35rem;color:var(--beige-soft);margin-bottom:12px;letter-spacing:-.01em;}
+  .why-item p{font-size:15.5px;color:#CFCDC3;}
+  @media(max-width:760px){.why-grid{grid-template-columns:1fr;gap:32px;}}
+
+  /* ---- contact ---- */
+  #contact{text-align:center;padding:120px 0;}
+  #contact h2{font-family:'Fraunces',serif;font-weight:500;font-size:clamp(2.1rem,4.6vw,3.4rem);letter-spacing:-.025em;line-height:1.05;max-width:14em;margin:0 auto 24px;}
+  #contact .sub{font-size:18px;color:var(--ink-soft);max-width:34em;margin:0 auto 40px;}
+  .contact-actions{display:flex;gap:16px;justify-content:center;flex-wrap:wrap;margin-bottom:46px;}
+  .contact-links{display:flex;gap:28px;justify-content:center;flex-wrap:wrap;font-size:14px;letter-spacing:.04em;}
+  .contact-links a{color:var(--ink-soft);border-bottom:1px solid transparent;padding-bottom:3px;transition:all .2s;}
+  .contact-links a:hover{color:var(--forest);border-color:var(--beige);}
+
+  footer{border-top:1px solid var(--line);padding:32px 0;}
+  footer .wrap{display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:12px;font-size:13px;color:var(--ink-soft);}
+  footer .serif{font-size:16px;color:var(--ink);}
+</style>
+</head>
+<body>
+
+<nav id="nav">
+  <div class="nav-inner">
+    <a href="#top" class="nav-logo">Priscilla <span>Aristotles</span></a>
+    <div class="nav-links">
+      <a href="#results">Results</a>
+      <a href="#about">About</a>
+      <a href="#cases">Case Studies</a>
+      <a href="#services">What I Do</a>
+      <a href="#contact" class="nav-cta">Start a Conversation</a>
+    </div>
+    <button class="nav-toggle" onclick="document.querySelector('.nav-links').style.display = document.querySelector('.nav-links').style.display==='flex'?'none':'flex'">☰</button>
+  </div>
+</nav>
+
+<!-- HERO -->
+<header class="hero" id="top">
+  <div class="wrap">
+    <div class="hero-grid">
+      <div class="hero-copy reveal">
+        <div class="eyebrow">Fractional Growth Partner</div>
+        <h1>Priscilla<br>Aristotles</h1>
+        <div class="role">for founders &amp; consumer brands</div>
+        <p class="lede">Helping founders and consumer brands turn ideas into revenue, traction, and scalable systems  -  across growth, marketing, and fundraising.</p>
+        <p class="pathline">Former <b>Business Intelligence Analyst</b> → <b>Founder</b> → <b>Fractional Growth Partner</b></p>
+        <div class="supporting">
+          <span>Growth Strategy</span>
+          <span>Performance Marketing</span>
+          <span>Fundraising &amp; Commercial Strategy</span>
+          <span>AI-Powered Systems</span>
+        </div>
+        <div class="hero-actions">
+          <a href="#cases" class="btn-primary">See the work →</a>
+          <a href="#contact" class="btn-ghost">Start a conversation</a>
+        </div>
+      </div>
+      <div class="hero-photo reveal">
+        <div class="frame">
+          <img src="assets/headshot.png" alt="Priscilla Aristotles">
+        </div>
+        <div class="tag">
+          <div class="num">18mo</div>
+          <div class="lbl">0 → 7-branch aerial<br>studio chain, SEA</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</header>
+
+<!-- BACKGROUND STRIP -->
+<div class="strip">
+  <div class="wrap">
+    <p>Experience spanning <b>startups</b>, <b>business intelligence</b>, <b>fundraising</b>, and <b>multi-location consumer brands</b> across <b>Southeast Asia &amp; Europe</b></p>
+  </div>
+</div>
+
+<!-- SELECTED RESULTS -->
+<section id="results">
+  <div class="wrap">
+    <div class="sec-head reveal">
+      <div class="sec-kicker">Selected Results</div>
+      <h2>Numbers with<br>a story behind them.</h2>
+    </div>
+    <div class="stats reveal">
+      <div class="stat">
+        <div class="figure">7 Branches</div>
+        <div class="desc">Samasta Aerial Studio scaled from 1 to 7 branches across Jakarta, Tangerang, Medan &amp; Yogyakarta  -  built and operated from scratch in under 18 months.</div>
+      </div>
+      <div class="stat">
+        <div class="figure">10,000+</div>
+        <div class="desc">Trial classes filled across all Samasta locations  -  driven by a community-first acquisition model, not paid-first.</div>
+      </div>
+      <div class="stat">
+        <div class="figure">95%+</div>
+        <div class="desc">Of trial students shared their experience organically on social  -  generating 30–40% of new student acquisition through referrals and reducing blended CAC against a paid media baseline.</div>
+      </div>
+      <div class="stat">
+        <div class="figure">30–40%</div>
+        <div class="desc">Of new student acquisition driven by referrals  -  the direct result of a brand built on experience quality, not ad spend. The rest closed through paid with above-average conversion rates.</div>
+      </div>
+      <div class="stat">
+        <div class="figure">200,000+</div>
+        <div class="desc">Monthly active users on a Southeast Asian activity platform  -  sustained through GTM strategy, operator acquisition, and seed fundraising work executed as CBO.</div>
+      </div>
+      <div class="stat">
+        <div class="figure">Rp 100B+</div>
+        <div class="desc">Annualized GTV flowing through the platform  -  all organic, zero paid user acquisition. A function of operator density and transaction infrastructure, not marketing budget.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ABOUT -->
+<section id="about">
+  <div class="wrap">
+    <div class="about-grid">
+      <div class="reveal">
+        <h2>I've built businesses on both sides of the table.</h2>
+      </div>
+      <div class="about-body reveal">
+        <div class="lead-set">
+          <span><b>Most strategists advise growth.</b></span>
+          <span><b>Most marketers run campaigns.</b></span>
+          <span><b>Most consultants build slides.</b></span>
+        </div>
+        <p>I've had to make payroll, open locations, acquire customers, improve retention, and build systems that work when nobody is watching.</p>
+        <p>After starting my career in business intelligence and strategy, I went on to build and scale businesses across Southeast Asia and Europe. Most recently, I built Samasta Aerial from a single studio into a multi-branch fitness brand while leading growth, marketing, operations, and expansion strategy.</p>
+        <p>Today I work with founders, consumer brands, and early-stage startups as a fractional growth partner  -  helping them clarify positioning, acquire customers, build scalable systems, and communicate their story to investors.</p>
+        <p>My work sits at the intersection of growth strategy, performance marketing, fundraising, and AI-powered operations.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CASE STUDIES -->
+<section id="cases">
+  <div class="wrap">
+    <div class="sec-head reveal">
+      <div class="sec-kicker">Case Studies</div>
+      <h2>Three problems, solved like an operator.</h2>
+    </div>
+
+    <!-- CASE 1 -->
+    <div class="case reveal">
+      <div class="case-top">
+        <div>
+          <div class="case-no">Case Study 01</div>
+          <h3>Building a Multi-Branch Fitness Brand from Zero</h3>
+        </div>
+        <div class="case-meta">Founder &amp; Operator<br>Samasta Aerial · Indonesia</div>
+      </div>
+      <div class="case-cols">
+        <div class="case-block">
+          <h4>The Problem</h4>
+          <p>Aerial arts was a niche, unfamiliar category in Indonesia. The challenge was creating demand, acquiring customers in a market that didn't understand the product, and building systems that could scale across multiple cities  -  without external funding.</p>
+          <h4 style="margin-top:26px">What I Did</h4>
+          <ul>
+            <li>Designed the business model and membership structure</li>
+            <li>Created the brand positioning and growth strategy</li>
+            <li>Built community-driven acquisition systems</li>
+            <li>Developed referral and retention programs</li>
+            <li>Implemented AI-assisted marketing workflows</li>
+            <li>Led operational scaling and branch expansion</li>
+          </ul>
+        </div>
+        <div class="case-block case-results">
+          <h4>Results</h4>
+          <ul>
+            <li><b>7 branches</b> launched across Jakarta, Tangerang, Medan &amp; Yogyakarta in under 24 months</li>
+            <li><b>1,000+</b> active students served annually</li>
+            <li><b>95%+</b> of trial students organically share class experiences online</li>
+            <li>Community-led growth reduced reliance on paid acquisition after launch periods</li>
+            <li>Created Indonesia's <b>first localized aerial instructor certification program</b></li>
+          </ul>
+        </div>
+      </div>
+      <div class="visuals">
+        <div class="v-label">Project Visuals</div>
+        <div class="v-grid">
+          <div class="v-slot"><div class="ic">◳</div><div class="name">Brand Evolution</div><div class="hint">upload pending</div></div>
+          <div class="v-slot"><div class="ic">◳</div><div class="name">Branch Growth Timeline</div><div class="hint">upload pending</div></div>
+          <div class="v-slot"><div class="ic">◳</div><div class="name">Membership Structure</div><div class="hint">upload pending</div></div>
+          <div class="v-slot"><div class="ic">◳</div><div class="name">Community Content</div><div class="hint">upload pending</div></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- CASE 2 -->
+    <div class="case reveal">
+      <div class="case-top">
+        <div>
+          <div class="case-no">Case Study 02</div>
+          <h3>Performance Marketing for a Multi-Location Wellness Brand</h3>
+        </div>
+        <div class="case-meta">Growth &amp; Paid Media<br>Multi-Location · Indonesia</div>
+      </div>
+      <div class="case-cols">
+        <div class="case-block">
+          <h4>The Problem</h4>
+          <p>Running paid acquisition across multiple studio locations with different audiences, local competition, and pricing structures  -  while maintaining efficient customer acquisition.</p>
+          <h4 style="margin-top:26px">What I Did</h4>
+          <ul>
+            <li>Managed Meta advertising strategy across locations</li>
+            <li>Built creative testing systems</li>
+            <li>Developed audience segmentation frameworks</li>
+            <li>Localized campaigns by geography and intent</li>
+            <li>Connected organic content strategy with paid acquisition</li>
+          </ul>
+        </div>
+        <div class="case-block case-results">
+          <h4>Results</h4>
+          <ul>
+            <li><b>300–500 qualified leads</b> generated monthly across locations</li>
+            <li><b>~30% reduction</b> in cost-per-lead through audience and creative optimization</li>
+            <li>Built a hybrid acquisition model combining paid, referral &amp; organic channels</li>
+            <li>Supported expansion <b>from 1 to 7 locations</b> while maintaining acquisition efficiency</li>
+          </ul>
+        </div>
+      </div>
+      <div class="visuals">
+        <div class="v-label">Project Visuals</div>
+        <div class="v-grid">
+          <div class="v-slot"><div class="ic">◳</div><div class="name">Ad Creatives</div><div class="hint">upload pending</div></div>
+          <div class="v-slot"><div class="ic">◳</div><div class="name">Funnel Screenshots</div><div class="hint">upload pending</div></div>
+          <div class="v-slot"><div class="ic">◳</div><div class="name">Results Dashboard</div><div class="hint">upload pending</div></div>
+          <div class="v-slot"><div class="ic">◳</div><div class="name">Campaign Breakdowns</div><div class="hint">upload pending</div></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- CASE 3 -->
+    <div class="case reveal">
+      <div class="case-top">
+        <div>
+          <div class="case-no">Case Study 03</div>
+          <h3>Fundraising Strategy &amp; Investor Narrative for an Early-Stage SaaS Startup</h3>
+        </div>
+        <div class="case-meta">Commercial &amp; Fundraising<br>Early-Stage SaaS · SEA<br><span style="color:var(--beige)">Details on request</span></div>
+      </div>
+      <div class="case-cols">
+        <div class="case-block">
+          <h4>The Problem</h4>
+          <p>The company had meaningful traction but lacked a clear investor narrative capable of translating operational momentum into a compelling fundraising story.</p>
+          <h4 style="margin-top:26px">What I Did</h4>
+          <ul>
+            <li>Audited existing positioning</li>
+            <li>Identified narrative and messaging gaps</li>
+            <li>Developed fundraising story and market framing</li>
+            <li>Built investor presentation and supporting materials</li>
+            <li>Conducted competitive landscape analysis</li>
+            <li>Created growth roadmap and GTM strategy</li>
+          </ul>
+        </div>
+        <div class="case-block case-results">
+          <h4>Results</h4>
+          <ul>
+            <li>Repositioned the business narrative around <b>scalable SaaS &amp; participation infrastructure</b></li>
+            <li>Developed fundraising materials <b>currently used in investor discussions</b> across Southeast Asia</li>
+            <li>Built investor deck, market sizing framework, growth narrative &amp; roadmap</li>
+            <li>Supporting a targeted seed round of <b>US$750K+</b></li>
+          </ul>
+        </div>
+      </div>
+      <div class="visuals">
+        <div class="v-label">Project Visuals</div>
+        <div class="v-grid">
+          <div class="v-slot"><div class="ic">◳</div><div class="name">Selected Deck Slides</div><div class="hint">upload pending</div></div>
+          <a class="v-slot" href="positioning_framework.html" target="_blank">
+            <div class="cover">
+              <svg viewBox="0 0 240 180" xmlns="http://www.w3.org/2000/svg">
+                <rect width="240" height="180" fill="#EBE7DC"/>
+                <rect x="0" y="0" width="240" height="30" fill="#1E3327"/>
+                <text x="16" y="19" font-family="Fraunces,serif" font-size="12" font-weight="600" fill="#FBFAF6">Positioning Canvas</text>
+                <circle cx="218" cy="15" r="3" fill="#C9A77C"/>
+                <!-- layered rows -->
+                <g font-family="Spline Sans,sans-serif">
+                  <rect x="16" y="42" width="58" height="26" rx="3" fill="#C9A77C" opacity="0.35"/>
+                  <rect x="80" y="42" width="144" height="26" rx="3" fill="#FBFAF6" stroke="#D8D2C4"/>
+                  <rect x="16" y="74" width="58" height="26" rx="3" fill="#C9A77C" opacity="0.55"/>
+                  <rect x="80" y="74" width="144" height="26" rx="3" fill="#FBFAF6" stroke="#D8D2C4"/>
+                  <rect x="16" y="106" width="58" height="26" rx="3" fill="#2C4A37" opacity="0.55"/>
+                  <rect x="80" y="106" width="144" height="26" rx="3" fill="#FBFAF6" stroke="#D8D2C4"/>
+                  <rect x="16" y="138" width="208" height="26" rx="3" fill="#2C4A37"/>
+                  <text x="120" y="155" text-anchor="middle" font-family="Fraunces,serif" font-style="italic" font-size="11" font-weight="600" fill="#C9A77C">Run it. Grow it.</text>
+                  <line x1="96" y1="55" x2="210" y2="55" stroke="#C9A77C" stroke-width="2"/>
+                  <line x1="96" y1="87" x2="195" y2="87" stroke="#2C4A37" stroke-width="2" opacity="0.4"/>
+                  <line x1="96" y1="119" x2="205" y2="119" stroke="#2C4A37" stroke-width="2" opacity="0.4"/>
+                </g>
+              </svg>
+            </div>
+            <div class="tile-foot"><span class="tile-name">Positioning Framework</span><span class="tile-cta">view live →</span></div>
+          </a>
+          <a class="v-slot" href="narrative_architecture.html" target="_blank">
+            <div class="cover">
+              <svg viewBox="0 0 240 180" xmlns="http://www.w3.org/2000/svg">
+                <rect width="240" height="180" fill="#EBE7DC"/>
+                <rect x="0" y="0" width="240" height="30" fill="#1E3327"/>
+                <text x="16" y="19" font-family="Fraunces,serif" font-size="12" font-weight="600" fill="#FBFAF6">Narrative Arc</text>
+                <circle cx="218" cy="15" r="3" fill="#C9A77C"/>
+                <!-- emotional curve -->
+                <path d="M 20 120 Q 50 95 75 105 T 130 92 Q 160 78 185 70 T 222 88" fill="none" stroke="#2C4A37" stroke-width="2.5" stroke-linecap="round"/>
+                <path d="M 20 120 Q 50 95 75 105 T 130 92 Q 160 78 185 70 T 222 88 L 222 150 L 20 150 Z" fill="#2C4A37" opacity="0.07"/>
+                <!-- beat dots -->
+                <circle cx="20" cy="120" r="4" fill="#C9A77C"/>
+                <circle cx="75" cy="105" r="4" fill="#C9A77C"/>
+                <circle cx="130" cy="92" r="4" fill="#C9A77C"/>
+                <circle cx="160" cy="78" r="5" fill="#2C4A37"/>
+                <circle cx="222" cy="88" r="5" fill="#2C4A37"/>
+                <line x1="20" y1="150" x2="222" y2="150" stroke="#D8D2C4" stroke-width="1"/>
+                <text x="20" y="166" font-family="Spline Sans,sans-serif" font-size="8" fill="#4A4B43">Tension</text>
+                <text x="222" y="166" text-anchor="end" font-family="Spline Sans,sans-serif" font-size="8" fill="#4A4B43">Ask</text>
+                <text x="150" y="166" text-anchor="middle" font-family="Spline Sans,sans-serif" font-size="8" font-weight="600" fill="#2C4A37">Proof ★</text>
+              </svg>
+            </div>
+            <div class="tile-foot"><span class="tile-name">Narrative Architecture</span><span class="tile-cta">view live →</span></div>
+          </a>
+        </div>
+      </div>
+    </div>
+
+    <!-- CASE 4 -->
+    <div class="case reveal">
+      <div class="case-top">
+        <div>
+          <div class="case-no">Case Study 04</div>
+          <h3>B2B Go-to-Market from Zero for an Early-Stage SaaS Platform</h3>
+        </div>
+        <div class="case-meta">Commercial &amp; B2B Sales<br>Early-Stage SaaS · SEA<br><span style="color:var(--beige)">Details anonymized</span></div>
+      </div>
+      <div class="case-cols">
+        <div class="case-block">
+          <h4>The Problem</h4>
+          <p>A new B2B subscription product needed to acquire 300 paying studio customers in 12 months  -  with one solo operator, a phased budget starting under $200/month, and a product that wasn't yet fully optimal. No SDR team, no marketing budget, no GTM playbook.</p>
+          <h4 style="margin-top:26px">What I Did</h4>
+          <ul>
+            <li>Designed an outcome-gated GTM playbook with milestone-based budget unlocks</li>
+            <li>Built a 6-channel mix sequenced by phase, not launched simultaneously</li>
+            <li>Engineered a 4-touch outreach sequence with localized templates</li>
+            <li>Created a 20-minute discovery framework that diagnoses bottleneck type</li>
+            <li>Built a custom lightweight CRM pre-loaded with qualified leads</li>
+            <li>Drafted a phased budget proposal for CEO with hard kill switches</li>
+          </ul>
+        </div>
+        <div class="case-block case-results">
+          <h4>Results</h4>
+          <ul>
+            <li>Structured a <b>4-gate phase ladder</b> from 0 → 300 paid customers, each unlocked by hard milestone</li>
+            <li>Reduced approval friction by proposing budget in <b>tranches starting at &lt;$200/mo</b>, scaling only on proof</li>
+            <li>Mapped <b>6 acquisition channels</b> with attribution targets, CAC ceilings, and kill switches</li>
+            <li>Delivered <b>17-section operating playbook</b> + functional CRM as live deliverables</li>
+            <li>Strategy currently in execution; CEO-approved framework, milestones tracked weekly</li>
+          </ul>
+        </div>
+      </div>
+      <div class="visuals">
+        <div class="v-label">Project Visuals</div>
+        <div class="v-grid">
+          <a class="v-slot" href="playbook.html" target="_blank">
+            <div class="cover">
+              <svg viewBox="0 0 240 180" xmlns="http://www.w3.org/2000/svg">
+                <rect width="240" height="180" fill="#EBE7DC"/>
+                <rect x="0" y="0" width="240" height="30" fill="#1E3327"/>
+                <text x="16" y="19" font-family="Fraunces,serif" font-size="12" font-weight="600" fill="#FBFAF6">GTM Playbook</text>
+                <circle cx="218" cy="15" r="3" fill="#C9A77C"/>
+                <!-- 4 phase gate ladder -->
+                <g font-family="Spline Sans,sans-serif" font-size="8" font-weight="600">
+                  <rect x="16" y="44" width="208" height="26" rx="3" fill="#FBFAF6" stroke="#D8D2C4"/>
+                  <rect x="16" y="44" width="52" height="26" rx="3" fill="#C9A77C" opacity="0.3"/>
+                  <text x="24" y="60" fill="#2C4A37">Gate 1 · 10</text>
+                  <rect x="16" y="74" width="208" height="26" rx="3" fill="#FBFAF6" stroke="#D8D2C4"/>
+                  <rect x="16" y="74" width="100" height="26" rx="3" fill="#C9A77C" opacity="0.45"/>
+                  <text x="24" y="90" fill="#2C4A37">Gate 2 · 40</text>
+                  <rect x="16" y="104" width="208" height="26" rx="3" fill="#FBFAF6" stroke="#D8D2C4"/>
+                  <rect x="16" y="104" width="155" height="26" rx="3" fill="#2C4A37" opacity="0.4"/>
+                  <text x="24" y="120" fill="#2C4A37">Gate 3 · 120</text>
+                  <rect x="16" y="134" width="208" height="26" rx="3" fill="#2C4A37"/>
+                  <text x="24" y="150" fill="#FBFAF6">Gate 4 · 300 paid</text>
+                </g>
+              </svg>
+            </div>
+            <div class="tile-foot"><span class="tile-name">GTM Playbook</span><span class="tile-cta">view live →</span></div>
+          </a>
+          <a class="v-slot" href="crm.html" target="_blank">
+            <div class="cover">
+              <svg viewBox="0 0 240 180" xmlns="http://www.w3.org/2000/svg">
+                <rect width="240" height="180" fill="#EBE7DC"/>
+                <rect x="0" y="0" width="240" height="30" fill="#1E3327"/>
+                <text x="16" y="19" font-family="Fraunces,serif" font-size="12" font-weight="600" fill="#FBFAF6">Pipeline CRM</text>
+                <circle cx="218" cy="15" r="3" fill="#C9A77C"/>
+                <!-- kanban columns -->
+                <g>
+                  <rect x="16" y="42" width="48" height="124" rx="4" fill="#FBFAF6" stroke="#D8D2C4"/>
+                  <rect x="70" y="42" width="48" height="124" rx="4" fill="#FBFAF6" stroke="#D8D2C4"/>
+                  <rect x="124" y="42" width="48" height="124" rx="4" fill="#FBFAF6" stroke="#D8D2C4"/>
+                  <rect x="178" y="42" width="46" height="124" rx="4" fill="#1E3327"/>
+                  <!-- column headers -->
+                  <rect x="16" y="42" width="48" height="10" rx="4" fill="#D8D2C4"/>
+                  <rect x="70" y="42" width="48" height="10" rx="4" fill="#C9A77C" opacity="0.5"/>
+                  <rect x="124" y="42" width="48" height="10" rx="4" fill="#C9A77C" opacity="0.7"/>
+                  <rect x="178" y="42" width="46" height="10" rx="4" fill="#C9A77C"/>
+                  <!-- cards -->
+                  <rect x="20" y="58" width="40" height="14" rx="2" fill="#EBE7DC"/>
+                  <rect x="20" y="76" width="40" height="14" rx="2" fill="#EBE7DC"/>
+                  <rect x="20" y="94" width="40" height="14" rx="2" fill="#EBE7DC"/>
+                  <rect x="74" y="58" width="40" height="14" rx="2" fill="#EBE7DC"/>
+                  <rect x="74" y="76" width="40" height="14" rx="2" fill="#EBE7DC"/>
+                  <rect x="128" y="58" width="40" height="14" rx="2" fill="#EBE7DC"/>
+                  <rect x="182" y="58" width="38" height="14" rx="2" fill="#2C4A37"/>
+                  <rect x="182" y="76" width="38" height="14" rx="2" fill="#2C4A37"/>
+                  <text x="201" y="158" text-anchor="middle" font-family="Fraunces,serif" font-size="9" font-weight="600" fill="#C9A77C">Paid</text>
+                </g>
+              </svg>
+            </div>
+            <div class="tile-foot"><span class="tile-name">Pipeline CRM</span><span class="tile-cta">view live →</span></div>
+          </a>
+          <a class="v-slot" href="playbook.html#ladder" target="_blank">
+            <div class="cover">
+              <svg viewBox="0 0 240 180" xmlns="http://www.w3.org/2000/svg">
+                <rect width="240" height="180" fill="#EBE7DC"/>
+                <rect x="0" y="0" width="240" height="30" fill="#1E3327"/>
+                <text x="16" y="19" font-family="Fraunces,serif" font-size="12" font-weight="600" fill="#FBFAF6">Phase Gate Framework</text>
+                <circle cx="222" cy="15" r="3" fill="#C9A77C"/>
+                <!-- vertical spine -->
+                <line x1="36" y1="44" x2="36" y2="164" stroke="#C9A77C" stroke-width="2"/>
+                <!-- gate rows -->
+                <g font-family="Spline Sans,sans-serif">
+                  <!-- gate 1 -->
+                  <circle cx="36" cy="54" r="5" fill="#C9A77C"/>
+                  <rect x="50" y="44" width="174" height="20" rx="3" fill="#FBFAF6" stroke="#D8D2C4"/>
+                  <text x="58" y="57" font-size="8" fill="#4A4B43">Gate 1 · 10 paid · ~$200/mo</text>
+                  <!-- gate 2 -->
+                  <circle cx="36" cy="84" r="5" fill="#C9A77C"/>
+                  <rect x="50" y="74" width="174" height="20" rx="3" fill="#FBFAF6" stroke="#D8D2C4"/>
+                  <text x="58" y="87" font-size="8" fill="#4A4B43">Gate 2 · 40 paid · ~$650/mo</text>
+                  <!-- gate 3 -->
+                  <circle cx="36" cy="114" r="5" fill="#2C4A37"/>
+                  <rect x="50" y="104" width="174" height="20" rx="3" fill="#EBE7DC" stroke="#D8D2C4"/>
+                  <text x="58" y="117" font-size="8" font-weight="600" fill="#2C4A37">Gate 3 · 120 paid · ~$1.3K/mo</text>
+                  <!-- gate 4 -->
+                  <circle cx="36" cy="154" r="6" fill="#1E3327"/>
+                  <rect x="50" y="144" width="174" height="20" rx="3" fill="#1E3327"/>
+                  <text x="58" y="157" font-size="8" font-weight="600" fill="#C9A77C">Gate 4 · 300 paid · Goal</text>
+                  <!-- unlock arrows -->
+                  <text x="30" y="71" font-size="8" fill="#C9A77C" text-anchor="middle">↓</text>
+                  <text x="30" y="101" font-size="8" fill="#C9A77C" text-anchor="middle">↓</text>
+                  <text x="30" y="131" font-size="8" fill="#2C4A37" text-anchor="middle">↓</text>
+                </g>
+              </svg>
+            </div>
+            <div class="tile-foot"><span class="tile-name">Phase Gate Framework</span><span class="tile-cta">view live →</span></div>
+          </a>
+          <a class="v-slot" href="playbook.html#budget" target="_blank">
+            <div class="cover">
+              <svg viewBox="0 0 240 180" xmlns="http://www.w3.org/2000/svg">
+                <rect width="240" height="180" fill="#EBE7DC"/>
+                <rect x="0" y="0" width="240" height="30" fill="#1E3327"/>
+                <text x="16" y="19" font-family="Fraunces,serif" font-size="12" font-weight="600" fill="#FBFAF6">Budget Proposal</text>
+                <circle cx="222" cy="15" r="3" fill="#C9A77C"/>
+                <!-- budget bars growing phase by phase -->
+                <g font-family="Spline Sans,sans-serif" font-size="8">
+                  <!-- labels -->
+                  <text x="24" y="56" fill="#4A4B43" font-weight="600">Phase 1</text>
+                  <text x="24" y="86" fill="#4A4B43" font-weight="600">Phase 2</text>
+                  <text x="24" y="116" fill="#4A4B43" font-weight="600">Phase 3</text>
+                  <text x="24" y="146" fill="#4A4B43" font-weight="600">Phase 4</text>
+                  <!-- bars -->
+                  <rect x="72" y="44" width="28" height="16" rx="2" fill="#C9A77C" opacity="0.5"/>
+                  <rect x="72" y="74" width="72" height="16" rx="2" fill="#C9A77C" opacity="0.7"/>
+                  <rect x="72" y="104" width="124" height="16" rx="2" fill="#2C4A37" opacity="0.6"/>
+                  <rect x="72" y="134" width="160" height="16" rx="2" fill="#1E3327"/>
+                  <!-- value labels -->
+                  <text x="104" y="56" fill="#4A4B43">~$200/mo</text>
+                  <text x="148" y="86" fill="#4A4B43">~$650/mo</text>
+                  <text x="200" y="116" fill="#2C4A37" font-weight="600">~$1.3K/mo</text>
+                  <text x="236" y="146" fill="#C9A77C" font-weight="600" text-anchor="end">~$2K/mo</text>
+                  <!-- unlock label -->
+                  <text x="16" y="170" fill="#4A4B43" font-size="7">Each phase unlocks on milestone hit, not calendar date</text>
+                </g>
+              </svg>
+            </div>
+            <div class="tile-foot"><span class="tile-name">Budget Proposal</span><span class="tile-cta">view live →</span></div>
+          </a>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- WHAT I DO -->
+<section id="services">
+  <div class="wrap">
+    <div class="sec-head reveal">
+      <div class="sec-kicker">What I Do</div>
+      <h2>One operator across the full stack of growth.</h2>
+    </div>
+    <div class="services reveal">
+      <div class="svc">
+        <div class="svc-no">01</div>
+        <h3>Growth Strategy</h3>
+        <p>Market positioning, customer acquisition planning, competitive analysis, and execution roadmaps for founders who need clarity before they spend.</p>
+      </div>
+      <div class="svc">
+        <div class="svc-no">02</div>
+        <h3>Performance Marketing</h3>
+        <p>Meta and Google Ads strategy, audience segmentation, creative direction, funnel optimization, and growth systems designed around business outcomes.</p>
+      </div>
+      <div class="svc">
+        <div class="svc-no">03</div>
+        <h3>Fundraising &amp; Commercial Strategy</h3>
+        <p>Investor decks, fundraising narratives, sales presentations, and growth strategies built around how investors and buyers actually make decisions.</p>
+      </div>
+      <div class="svc">
+        <div class="svc-no">04</div>
+        <h3>AI-Powered Marketing Systems</h3>
+        <p>Custom GPT and Claude workflows, content systems, research automation, and scalable operations that increase execution speed without adding headcount.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- WHY HIRE -->
+<section id="why">
+  <div class="wrap">
+    <div class="sec-head reveal">
+      <div class="sec-kicker">Why Clients Hire Me</div>
+      <h2>The difference between advising growth and having built it.</h2>
+    </div>
+    <div class="why-grid reveal">
+      <div class="why-item">
+        <h3>I Build, Then Advise</h3>
+        <p>I've operated businesses myself  -  from startups to multi-location consumer brands. My recommendations come from execution, not theory.</p>
+      </div>
+      <div class="why-item">
+        <h3>Outcomes Over Deliverables</h3>
+        <p>I focus on growth, retention, positioning, acquisition efficiency, and fundraising milestones  -  not documents for the sake of documents.</p>
+      </div>
+      <div class="why-item">
+        <h3>Strategy + Execution Under One Roof</h3>
+        <p>Most people are either strategic or tactical. I work across both  -  from customer psychology and growth strategy to investor narratives and marketing execution.</p>
+      </div>
+      <div class="why-item">
+        <h3>AI-Native Without Losing Judgment</h3>
+        <p>I leverage AI to accelerate research, content, and execution while maintaining the strategic thinking businesses actually pay for.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CONTACT -->
+<section id="contact">
+  <div class="wrap">
+    <div class="reveal">
+      <h2>Let's build something worth scaling.</h2>
+      <p class="sub">Whether you're launching, growing, fundraising, or simply trying to figure out your next move, I'm always open to conversations with ambitious founders and operators.</p>
+      <div class="contact-actions">
+        <a href="mailto:priscilla.aristotles@gmail.com" class="btn-primary">Start a conversation →</a>
+      </div>
+      <div class="contact-links">
+        <a href="mailto:priscilla.aristotles@gmail.com">priscilla.aristotles@gmail.com</a>
+        <a href="#" data-link="linkedin">LinkedIn</a>
+        <a href="#" data-link="upwork">Upwork</a>
+        <a href="#" data-link="calendly">Calendly</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap">
+    <div class="serif">Priscilla Aristotles</div>
+    <div>Fractional Growth Partner · Founders &amp; Consumer Brands · © 2026</div>
+  </div>
+</footer>
+
+<script>
+  // nav border on scroll
+  const nav=document.getElementById('nav');
+  window.addEventListener('scroll',()=>{nav.classList.toggle('scrolled',window.scrollY>20);});
+
+  // reveal on scroll
+  const io=new IntersectionObserver((entries)=>{
+    entries.forEach(e=>{if(e.isIntersecting){e.target.classList.add('in');io.unobserve(e.target);}});
+  },{threshold:0.12});
+  document.querySelectorAll('.reveal').forEach((el,i)=>{
+    el.style.transitionDelay=(Math.min(i,3)*0.07)+'s';
+    io.observe(el);
+  });
+</script>
+</body>
+</html>

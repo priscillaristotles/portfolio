@@ -1,0 +1,1213 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Pipeline CRM — Demo</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Sora:wght@300;400;500;600&display=swap');
+
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+:root {
+  --kuyy: #F5A623;
+  --kuyy-light: #FFF3DC;
+  --kuyy-dark: #C47D00;
+  --ink: #1A1814;
+  --ink2: #3D3A34;
+  --ink3: #7A7670;
+  --surface: #FAFAF8;
+  --surface2: #F2F0EB;
+  --surface3: #E8E5DE;
+  --border: #E0DDD5;
+  --white: #FFFFFF;
+  --green: #2D7A4F;
+  --green-bg: #EAF5EF;
+  --red: #C0392B;
+  --red-bg: #FDECEA;
+  --blue: #1A5276;
+  --blue-bg: #EBF5FB;
+  --purple: #6C3483;
+  --purple-bg: #F5EEF8;
+  --mono: 'DM Mono', monospace;
+  --sans: 'Sora', sans-serif;
+}
+
+body {
+  font-family: var(--sans);
+  background: var(--surface);
+  color: var(--ink);
+  min-height: 100vh;
+  font-size: 13px;
+}
+
+/* ── TOP NAV ── */
+.topnav {
+  background: var(--ink);
+  padding: 0 20px;
+  display: flex;
+  align-items: center;
+  gap: 24px;
+  height: 52px;
+  position: sticky;
+  top: 0;
+  z-index: 100;
+}
+.logo {
+  font-family: var(--mono);
+  font-size: 15px;
+  font-weight: 500;
+  color: var(--kuyy);
+  letter-spacing: -0.5px;
+  flex-shrink: 0;
+}
+.logo span { color: #fff; }
+.nav-tabs { display: flex; gap: 2px; }
+.nav-tab {
+  padding: 6px 14px;
+  border-radius: 6px;
+  font-size: 12px;
+  font-weight: 500;
+  color: #888;
+  cursor: pointer;
+  border: none;
+  background: none;
+  transition: all 0.15s;
+  font-family: var(--sans);
+}
+.nav-tab:hover { color: #fff; background: rgba(255,255,255,0.08); }
+.nav-tab.active { color: var(--ink); background: var(--kuyy); }
+.nav-right { margin-left: auto; display: flex; align-items: center; gap: 10px; }
+.kpi-pill {
+  background: rgba(255,255,255,0.08);
+  border-radius: 20px;
+  padding: 4px 10px;
+  font-size: 11px;
+  color: #bbb;
+  font-family: var(--mono);
+  display: flex; align-items: center; gap: 5px;
+}
+.kpi-pill b { color: var(--kuyy); font-weight: 500; }
+
+/* ── VIEWS ── */
+.view { display: none; padding: 20px; }
+.view.active { display: block; }
+
+/* ── DASHBOARD ── */
+.dash-grid {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  gap: 12px;
+  margin-bottom: 20px;
+}
+.metric-card {
+  background: var(--white);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  padding: 16px;
+}
+.metric-label {
+  font-size: 10px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.8px;
+  color: var(--ink3);
+  margin-bottom: 6px;
+}
+.metric-value {
+  font-family: var(--mono);
+  font-size: 28px;
+  font-weight: 500;
+  color: var(--ink);
+  line-height: 1;
+}
+.metric-value.orange { color: var(--kuyy-dark); }
+.metric-sub {
+  font-size: 10px;
+  color: var(--ink3);
+  margin-top: 4px;
+}
+
+.dash-row { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 12px; }
+.dash-full { margin-bottom: 12px; }
+
+.card {
+  background: var(--white);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  padding: 16px;
+}
+.card-title {
+  font-size: 11px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.8px;
+  color: var(--ink3);
+  margin-bottom: 14px;
+}
+
+/* funnel */
+.funnel { display: flex; flex-direction: column; gap: 6px; }
+.funnel-row { display: flex; align-items: center; gap: 10px; }
+.funnel-label { font-size: 12px; color: var(--ink2); width: 90px; flex-shrink: 0; }
+.funnel-bar-wrap { flex: 1; background: var(--surface2); border-radius: 4px; height: 20px; overflow: hidden; }
+.funnel-bar { height: 100%; background: var(--kuyy); border-radius: 4px; transition: width 0.5s ease; display: flex; align-items: center; padding: 0 8px; }
+.funnel-n { font-family: var(--mono); font-size: 11px; color: var(--ink); font-weight: 500; white-space: nowrap; }
+
+/* category breakdown */
+.cat-grid { display: flex; gap: 8px; }
+.cat-chip {
+  flex: 1; text-align: center; padding: 10px 6px;
+  background: var(--surface2); border-radius: 8px;
+}
+.cat-chip .n { font-family: var(--mono); font-size: 20px; font-weight: 500; }
+.cat-chip .l { font-size: 10px; color: var(--ink3); margin-top: 2px; }
+
+/* priority table */
+.pri-table { width: 100%; border-collapse: collapse; }
+.pri-table td { padding: 7px 0; border-bottom: 1px solid var(--surface2); font-size: 12px; }
+.pri-table tr:last-child td { border-bottom: none; }
+.pri-dot { width: 8px; height: 8px; border-radius: 50%; display: inline-block; margin-right: 6px; }
+.pri-dot.high { background: #E8593C; }
+.pri-dot.medium { background: var(--kuyy); }
+.pri-dot.low { background: var(--surface3); border: 1px solid var(--border); }
+
+/* weekly tracker */
+.week-row { display: flex; gap: 6px; margin-bottom: 8px; }
+.week-input-wrap { flex: 1; }
+.week-label { font-size: 10px; color: var(--ink3); margin-bottom: 3px; }
+.week-input {
+  width: 100%;
+  padding: 6px 8px;
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  font-family: var(--mono);
+  font-size: 13px;
+  background: var(--surface);
+  color: var(--ink);
+  outline: none;
+}
+.week-input:focus { border-color: var(--kuyy); }
+.week-save-btn {
+  padding: 8px 16px;
+  background: var(--kuyy);
+  color: var(--ink);
+  border: none;
+  border-radius: 6px;
+  font-family: var(--sans);
+  font-size: 12px;
+  font-weight: 600;
+  cursor: pointer;
+  align-self: flex-end;
+}
+.week-history { margin-top: 10px; }
+.week-hist-row {
+  display: flex; gap: 8px; align-items: center;
+  padding: 6px 0; border-bottom: 1px solid var(--surface2);
+  font-size: 11px;
+}
+.week-hist-row:last-child { border-bottom: none; }
+.week-hist-date { color: var(--ink3); font-family: var(--mono); min-width: 80px; }
+.week-stat { font-family: var(--mono); background: var(--surface2); padding: 2px 6px; border-radius: 4px; }
+.week-rate { font-family: var(--mono); color: var(--green); font-weight: 500; }
+
+/* ── PIPELINE ── */
+.pipeline-toolbar {
+  display: flex; gap: 8px; margin-bottom: 14px; align-items: center; flex-wrap: wrap;
+}
+.search-input {
+  padding: 7px 12px;
+  border: 1px solid var(--border);
+  border-radius: 7px;
+  font-family: var(--sans);
+  font-size: 12px;
+  background: var(--white);
+  color: var(--ink);
+  outline: none;
+  width: 200px;
+}
+.search-input:focus { border-color: var(--kuyy); }
+.filter-btn {
+  padding: 6px 12px;
+  border: 1px solid var(--border);
+  border-radius: 7px;
+  font-size: 11px;
+  font-weight: 500;
+  background: var(--white);
+  color: var(--ink2);
+  cursor: pointer;
+  font-family: var(--sans);
+  transition: all 0.15s;
+}
+.filter-btn:hover, .filter-btn.active {
+  background: var(--kuyy);
+  border-color: var(--kuyy);
+  color: var(--ink);
+}
+.add-btn {
+  margin-left: auto;
+  padding: 7px 14px;
+  background: var(--kuyy);
+  border: none;
+  border-radius: 7px;
+  font-family: var(--sans);
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--ink);
+  cursor: pointer;
+}
+
+/* pipeline board */
+.pipeline-board {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  gap: 10px;
+  overflow-x: auto;
+  padding-bottom: 10px;
+}
+.stage-col { min-width: 160px; }
+.stage-header {
+  padding: 8px 10px;
+  border-radius: 8px 8px 0 0;
+  margin-bottom: 8px;
+  display: flex; align-items: center; justify-content: space-between;
+}
+.stage-name { font-size: 11px; font-weight: 600; }
+.stage-count {
+  font-family: var(--mono);
+  font-size: 10px;
+  background: rgba(255,255,255,0.3);
+  padding: 1px 6px; border-radius: 10px;
+}
+.stage-cards { display: flex; flex-direction: column; gap: 7px; min-height: 60px; }
+
+/* stage colors */
+.s-lead .stage-header { background: var(--surface2); }
+.s-lead .stage-name { color: var(--ink2); }
+.s-contacted .stage-header { background: #FFF3DC; }
+.s-contacted .stage-name { color: #8B5E00; }
+.s-responded .stage-header { background: #E8F4FD; }
+.s-responded .stage-name { color: #1A5276; }
+.s-demo .stage-header { background: #F5EEF8; }
+.s-demo .stage-name { color: #6C3483; }
+.s-trial .stage-header { background: #EAF5EF; }
+.s-trial .stage-name { color: #1A6B3A; }
+.s-paid .stage-header { background: #1A1814; }
+.s-paid .stage-name { color: var(--kuyy); }
+.s-paid .stage-count { background: rgba(245,166,35,0.2); color: var(--kuyy); }
+.s-churned .stage-header { background: #FDECEA; }
+.s-churned .stage-name { color: var(--red); }
+
+/* lead card */
+.lead-card {
+  background: var(--white);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 10px;
+  cursor: pointer;
+  transition: all 0.15s;
+  position: relative;
+}
+.lead-card:hover { border-color: var(--kuyy); box-shadow: 0 2px 8px rgba(245,166,35,0.15); }
+.lead-card.priority-high { border-left: 3px solid #E8593C; }
+.lead-card.priority-medium { border-left: 3px solid var(--kuyy); }
+.lead-card-name { font-size: 11px; font-weight: 600; color: var(--ink); line-height: 1.3; margin-bottom: 4px; }
+.lead-card-meta { font-size: 10px; color: var(--ink3); display: flex; gap: 4px; flex-wrap: wrap; }
+.lead-tag {
+  background: var(--surface2);
+  padding: 1px 5px;
+  border-radius: 3px;
+  font-size: 9px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.4px;
+}
+.lead-tag.aerial { background: #E8F4FD; color: #1A5276; }
+.lead-tag.pilates { background: #F5EEF8; color: #6C3483; }
+.lead-tag.yoga { background: #EAF5EF; color: #1A6B3A; }
+.lead-tag.rezerv { background: #FDECEA; color: var(--red); }
+.lead-followers { font-size: 9px; color: var(--ink3); font-family: var(--mono); }
+.lead-date { font-size: 9px; color: var(--ink3); margin-top: 4px; }
+
+/* ── LEADS TABLE ── */
+.leads-toolbar { display: flex; gap: 8px; margin-bottom: 14px; align-items: center; flex-wrap: wrap; }
+.leads-table-wrap { overflow-x: auto; }
+.leads-table {
+  width: 100%; border-collapse: collapse;
+  background: var(--white);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  overflow: hidden;
+}
+.leads-table th {
+  padding: 10px 12px;
+  text-align: left;
+  font-size: 10px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.7px;
+  color: var(--ink3);
+  background: var(--surface2);
+  border-bottom: 1px solid var(--border);
+  white-space: nowrap;
+  cursor: pointer;
+  user-select: none;
+}
+.leads-table th:hover { color: var(--ink); }
+.leads-table td {
+  padding: 9px 12px;
+  font-size: 12px;
+  border-bottom: 1px solid var(--surface2);
+  vertical-align: middle;
+}
+.leads-table tr:last-child td { border-bottom: none; }
+.leads-table tr:hover td { background: var(--surface); }
+
+.stage-badge {
+  padding: 2px 8px; border-radius: 10px;
+  font-size: 10px; font-weight: 600;
+  text-transform: uppercase; letter-spacing: 0.5px;
+  white-space: nowrap;
+}
+.stage-lead { background: var(--surface2); color: var(--ink3); }
+.stage-contacted { background: #FFF3DC; color: #8B5E00; }
+.stage-responded { background: #E8F4FD; color: #1A5276; }
+.stage-demo { background: #F5EEF8; color: #6C3483; }
+.stage-trial { background: #EAF5EF; color: #1A6B3A; }
+.stage-paid { background: var(--ink); color: var(--kuyy); }
+.stage-churned { background: #FDECEA; color: var(--red); }
+
+.pri-badge {
+  width: 8px; height: 8px; border-radius: 50%; display: inline-block;
+}
+.pri-badge.high { background: #E8593C; }
+.pri-badge.medium { background: var(--kuyy); }
+.pri-badge.low { background: var(--surface3); border: 1px solid var(--border); }
+
+.ig-link { color: var(--blue); text-decoration: none; font-family: var(--mono); font-size: 11px; }
+.ig-link:hover { text-decoration: underline; }
+
+/* ── MODAL ── */
+.modal-overlay {
+  display: none;
+  position: fixed; inset: 0;
+  background: rgba(26,24,20,0.6);
+  z-index: 200;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+}
+.modal-overlay.open { display: flex; }
+.modal {
+  background: var(--white);
+  border-radius: 14px;
+  width: 100%;
+  max-width: 560px;
+  max-height: 90vh;
+  overflow-y: auto;
+  box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+}
+.modal-header {
+  padding: 18px 20px 14px;
+  border-bottom: 1px solid var(--border);
+  display: flex; align-items: flex-start; justify-content: space-between; gap: 10px;
+}
+.modal-title { font-size: 16px; font-weight: 600; }
+.modal-sub { font-size: 12px; color: var(--ink3); margin-top: 2px; }
+.modal-close {
+  background: var(--surface2); border: none; border-radius: 6px;
+  width: 28px; height: 28px; cursor: pointer; font-size: 16px; color: var(--ink2);
+  display: flex; align-items: center; justify-content: center; flex-shrink: 0;
+}
+.modal-body { padding: 18px 20px; }
+.modal-section-title {
+  font-size: 10px; font-weight: 600; text-transform: uppercase;
+  letter-spacing: 0.8px; color: var(--ink3); margin-bottom: 10px; margin-top: 14px;
+}
+.modal-section-title:first-child { margin-top: 0; }
+.modal-row { display: flex; gap: 12px; margin-bottom: 10px; }
+.modal-field { flex: 1; }
+.modal-field label { font-size: 10px; color: var(--ink3); display: block; margin-bottom: 4px; }
+.modal-field input, .modal-field select, .modal-field textarea {
+  width: 100%; padding: 7px 10px;
+  border: 1px solid var(--border); border-radius: 6px;
+  font-family: var(--sans); font-size: 12px;
+  background: var(--surface); color: var(--ink); outline: none;
+}
+.modal-field input:focus, .modal-field select:focus, .modal-field textarea:focus {
+  border-color: var(--kuyy);
+}
+.modal-field textarea { resize: vertical; min-height: 60px; }
+
+.stage-select { font-weight: 600; }
+
+/* log */
+.log-entry {
+  padding: 8px 10px;
+  background: var(--surface);
+  border-radius: 7px;
+  margin-bottom: 6px;
+  border-left: 2px solid var(--kuyy);
+}
+.log-date { font-family: var(--mono); font-size: 10px; color: var(--ink3); }
+.log-text { font-size: 12px; color: var(--ink); margin-top: 2px; }
+.log-empty { font-size: 12px; color: var(--ink3); font-style: italic; }
+.log-input-row { display: flex; gap: 8px; margin-top: 10px; }
+.log-input {
+  flex: 1; padding: 7px 10px;
+  border: 1px solid var(--border); border-radius: 6px;
+  font-family: var(--sans); font-size: 12px;
+  background: var(--surface); color: var(--ink); outline: none;
+}
+.log-input:focus { border-color: var(--kuyy); }
+.log-add-btn {
+  padding: 7px 14px;
+  background: var(--kuyy); border: none; border-radius: 6px;
+  font-family: var(--sans); font-size: 12px; font-weight: 600;
+  color: var(--ink); cursor: pointer; white-space: nowrap;
+}
+
+.modal-footer {
+  padding: 14px 20px;
+  border-top: 1px solid var(--border);
+  display: flex; gap: 8px; justify-content: flex-end;
+}
+.btn-save {
+  padding: 8px 20px; background: var(--kuyy);
+  border: none; border-radius: 7px;
+  font-family: var(--sans); font-size: 13px; font-weight: 600;
+  color: var(--ink); cursor: pointer;
+}
+.btn-cancel {
+  padding: 8px 16px; background: var(--surface2);
+  border: 1px solid var(--border); border-radius: 7px;
+  font-family: var(--sans); font-size: 13px;
+  color: var(--ink2); cursor: pointer;
+}
+.btn-danger {
+  padding: 8px 14px; background: var(--red-bg);
+  border: 1px solid #F5B7B1; border-radius: 7px;
+  font-family: var(--sans); font-size: 12px;
+  color: var(--red); cursor: pointer; margin-right: auto;
+}
+
+/* add lead modal */
+.add-modal { max-width: 480px; }
+
+/* empty state */
+.empty-col {
+  font-size: 11px; color: var(--ink3);
+  text-align: center; padding: 16px 8px;
+  background: var(--surface);
+  border: 1px dashed var(--border);
+  border-radius: 8px;
+}
+
+/* responsive */
+@media (max-width: 768px) {
+  .dash-grid { grid-template-columns: repeat(2, 1fr); }
+  .dash-row { grid-template-columns: 1fr; }
+  .pipeline-board { grid-template-columns: repeat(4, minmax(160px, 1fr)); }
+}
+</style>
+</head>
+<body>
+
+<nav class="topnav">
+  <div class="logo">CRM<span> </span> <span style="color:#555;font-size:11px;font-weight:400;">CRM</span></div>
+  <div class="nav-tabs">
+    <button class="nav-tab active" onclick="switchView('dashboard')">Dashboard</button>
+    <button class="nav-tab" onclick="switchView('pipeline')">Pipeline</button>
+    <button class="nav-tab" onclick="switchView('leads')">All Leads</button>
+  </div>
+  <div class="nav-right">
+    <div class="kpi-pill">Goal: <b id="nav-paid">0</b> / 300 paid</div>
+    <div class="kpi-pill"><b id="nav-trial">0</b> in trial</div>
+  </div>
+</nav>
+
+<!-- DASHBOARD -->
+<div class="view active" id="view-dashboard">
+  <div class="dash-grid">
+    <div class="metric-card">
+      <div class="metric-label">Total Leads</div>
+      <div class="metric-value" id="m-total">0</div>
+      <div class="metric-sub">in pipeline</div>
+    </div>
+    <div class="metric-card">
+      <div class="metric-label">Contacted</div>
+      <div class="metric-value orange" id="m-contacted">0</div>
+      <div class="metric-sub">outreach sent</div>
+    </div>
+    <div class="metric-card">
+      <div class="metric-label">In Trial</div>
+      <div class="metric-value" id="m-trial">0</div>
+      <div class="metric-sub">30-day trial</div>
+    </div>
+    <div class="metric-card">
+      <div class="metric-label">Paid Studios</div>
+      <div class="metric-value orange" id="m-paid">0</div>
+      <div class="metric-sub">of 300 goal</div>
+    </div>
+    <div class="metric-card">
+      <div class="metric-label">Response Rate</div>
+      <div class="metric-value" id="m-rr">—</div>
+      <div class="metric-sub">responded / contacted</div>
+    </div>
+  </div>
+
+  <div class="dash-row">
+    <div class="card">
+      <div class="card-title">Pipeline funnel</div>
+      <div class="funnel" id="funnel"></div>
+    </div>
+    <div class="card">
+      <div class="card-title">By category</div>
+      <div class="cat-grid" id="cat-grid"></div>
+      <div style="margin-top:14px">
+        <div class="card-title">By priority</div>
+        <table class="pri-table" id="pri-table"></table>
+      </div>
+    </div>
+  </div>
+
+  <div class="dash-row">
+    <div class="card">
+      <div class="card-title">High priority — act first</div>
+      <div id="high-pri-list"></div>
+    </div>
+    <div class="card">
+      <div class="card-title">On competitor platform — displacement targets</div>
+      <div id="rezerv-list"></div>
+    </div>
+  </div>
+
+  <div class="card dash-full">
+    <div class="card-title">Weekly metrics tracker</div>
+    <div class="week-row">
+      <div class="week-input-wrap">
+        <div class="week-label">Leads added</div>
+        <input class="week-input" id="wi-leads" type="number" placeholder="0">
+      </div>
+      <div class="week-input-wrap">
+        <div class="week-label">Outreach sent</div>
+        <input class="week-input" id="wi-outreach" type="number" placeholder="0">
+      </div>
+      <div class="week-input-wrap">
+        <div class="week-label">Responses</div>
+        <input class="week-input" id="wi-responses" type="number" placeholder="0">
+      </div>
+      <div class="week-input-wrap">
+        <div class="week-label">Calls booked</div>
+        <input class="week-input" id="wi-calls" type="number" placeholder="0">
+      </div>
+      <div class="week-input-wrap">
+        <div class="week-label">Trials started</div>
+        <input class="week-input" id="wi-trials" type="number" placeholder="0">
+      </div>
+      <button class="week-save-btn" onclick="saveWeek()">Save week</button>
+    </div>
+    <div class="week-history" id="week-history"></div>
+  </div>
+</div>
+
+<!-- PIPELINE -->
+<div class="view" id="view-pipeline">
+  <div class="pipeline-toolbar">
+    <input class="search-input" placeholder="Search studios..." oninput="renderPipeline()" id="pipe-search">
+    <button class="filter-btn active" onclick="setPipeFilter('all',this)">All</button>
+    <button class="filter-btn" onclick="setPipeFilter('Aerial',this)">Aerial</button>
+    <button class="filter-btn" onclick="setPipeFilter('Pilates',this)">Pilates</button>
+    <button class="filter-btn" onclick="setPipeFilter('Yoga',this)">Yoga</button>
+    <button class="filter-btn" onclick="setPipeFilter('high',this)">🔥 High only</button>
+    <button class="add-btn" onclick="openAddModal()">+ Add Studio</button>
+  </div>
+  <div class="pipeline-board" id="pipeline-board"></div>
+</div>
+
+<!-- ALL LEADS -->
+<div class="view" id="view-leads">
+  <div class="leads-toolbar">
+    <input class="search-input" placeholder="Search..." oninput="renderTable()" id="tbl-search">
+    <button class="filter-btn active" onclick="setTblFilter('all',this)">All</button>
+    <button class="filter-btn" onclick="setTblFilter('Aerial',this)">Aerial</button>
+    <button class="filter-btn" onclick="setTblFilter('Pilates',this)">Pilates</button>
+    <button class="filter-btn" onclick="setTblFilter('Yoga',this)">Yoga</button>
+    <button class="filter-btn" onclick="setTblFilter('high',this)">🔥 High</button>
+    <button class="filter-btn" onclick="setTblFilter('rezerv',this)">Competitor</button>
+    <button class="add-btn" onclick="openAddModal()">+ Add Studio</button>
+  </div>
+  <div class="leads-table-wrap">
+    <table class="leads-table">
+      <thead>
+        <tr>
+          <th onclick="sortTable('priority')">Pri</th>
+          <th onclick="sortTable('name')">Studio name</th>
+          <th onclick="sortTable('category')">Category</th>
+          <th onclick="sortTable('location')">Location</th>
+          <th>Instagram</th>
+          <th onclick="sortTable('followers')">Followers</th>
+          <th onclick="sortTable('stage')">Stage</th>
+          <th>Next action</th>
+          <th>Last contact</th>
+        </tr>
+      </thead>
+      <tbody id="leads-tbody"></tbody>
+    </table>
+  </div>
+</div>
+
+<!-- LEAD DETAIL MODAL -->
+<div class="modal-overlay" id="detail-modal">
+  <div class="modal">
+    <div class="modal-header">
+      <div>
+        <div class="modal-title" id="dm-name"></div>
+        <div class="modal-sub" id="dm-sub"></div>
+      </div>
+      <button class="modal-close" onclick="closeModal('detail-modal')">✕</button>
+    </div>
+    <div class="modal-body">
+      <div class="modal-section-title">Pipeline stage</div>
+      <div class="modal-row">
+        <div class="modal-field">
+          <label>Stage</label>
+          <select id="dm-stage" class="stage-select">
+            <option value="lead">Lead</option>
+            <option value="contacted">Contacted</option>
+            <option value="responded">Responded</option>
+            <option value="demo">Demo booked</option>
+            <option value="trial">Trial</option>
+            <option value="paid">Paid</option>
+            <option value="churned">Churned</option>
+          </select>
+        </div>
+        <div class="modal-field">
+          <label>Last contact date</label>
+          <input type="date" id="dm-lastcontact">
+        </div>
+      </div>
+      <div class="modal-row">
+        <div class="modal-field">
+          <label>Next action</label>
+          <input type="text" id="dm-nextaction" placeholder="e.g. Send deck via WA">
+        </div>
+        <div class="modal-field">
+          <label>Priority</label>
+          <select id="dm-priority">
+            <option value="high">High 🔥</option>
+            <option value="medium">Medium ⭐</option>
+            <option value="low">Low</option>
+          </select>
+        </div>
+      </div>
+
+      <div class="modal-section-title">Contact info</div>
+      <div class="modal-row">
+        <div class="modal-field">
+          <label>Instagram</label>
+          <input type="text" id="dm-ig">
+        </div>
+        <div class="modal-field">
+          <label>WhatsApp / Phone</label>
+          <input type="text" id="dm-phone">
+        </div>
+      </div>
+      <div class="modal-row">
+        <div class="modal-field">
+          <label>Email</label>
+          <input type="text" id="dm-email">
+        </div>
+        <div class="modal-field">
+          <label>Website</label>
+          <input type="text" id="dm-website">
+        </div>
+      </div>
+
+      <div class="modal-section-title">Notes</div>
+      <div class="modal-row">
+        <div class="modal-field">
+          <label>Notes</label>
+          <textarea id="dm-notes" rows="2"></textarea>
+        </div>
+      </div>
+
+      <div class="modal-section-title">Contact log</div>
+      <div id="dm-log"></div>
+      <div class="log-input-row">
+        <input class="log-input" id="dm-log-input" placeholder="Add a note (e.g. Sent deck via WA, waiting for reply)">
+        <button class="log-add-btn" onclick="addLog()">Add</button>
+      </div>
+    </div>
+    <div class="modal-footer">
+      <button class="btn-danger" onclick="deleteLead()">Delete</button>
+      <button class="btn-cancel" onclick="closeModal('detail-modal')">Cancel</button>
+      <button class="btn-save" onclick="saveLead()">Save changes</button>
+    </div>
+  </div>
+</div>
+
+<!-- ADD LEAD MODAL -->
+<div class="modal-overlay" id="add-modal">
+  <div class="modal add-modal">
+    <div class="modal-header">
+      <div>
+        <div class="modal-title">Add new studio</div>
+        <div class="modal-sub">Manually add a lead to your pipeline</div>
+      </div>
+      <button class="modal-close" onclick="closeModal('add-modal')">✕</button>
+    </div>
+    <div class="modal-body">
+      <div class="modal-row">
+        <div class="modal-field">
+          <label>Studio name *</label>
+          <input type="text" id="add-name" placeholder="e.g. Aura Pilates Studio">
+        </div>
+        <div class="modal-field">
+          <label>Category *</label>
+          <select id="add-category">
+            <option value="Pilates">Pilates</option>
+            <option value="Yoga">Yoga</option>
+            <option value="Aerial">Aerial</option>
+            <option value="HIIT">HIIT</option>
+            <option value="Barre">Barre</option>
+            <option value="Padel">Padel</option>
+            <option value="Run Club">Run Club</option>
+            <option value="Other">Other</option>
+          </select>
+        </div>
+      </div>
+      <div class="modal-row">
+        <div class="modal-field">
+          <label>Location</label>
+          <input type="text" id="add-location" placeholder="e.g. City Region">
+        </div>
+        <div class="modal-field">
+          <label>Priority</label>
+          <select id="add-priority">
+            <option value="high">High 🔥</option>
+            <option value="medium">Medium ⭐</option>
+            <option value="low">Low</option>
+          </select>
+        </div>
+      </div>
+      <div class="modal-row">
+        <div class="modal-field">
+          <label>Instagram handle</label>
+          <input type="text" id="add-ig" placeholder="@handle">
+        </div>
+        <div class="modal-field">
+          <label>Follower count</label>
+          <input type="text" id="add-followers" placeholder="e.g. 12,000">
+        </div>
+      </div>
+      <div class="modal-row">
+        <div class="modal-field">
+          <label>WhatsApp / Phone</label>
+          <input type="text" id="add-phone">
+        </div>
+        <div class="modal-field">
+          <label>Email</label>
+          <input type="text" id="add-email">
+        </div>
+      </div>
+      <div class="modal-row">
+        <div class="modal-field">
+          <label>Website</label>
+          <input type="text" id="add-website">
+        </div>
+        <div class="modal-field">
+          <label>Notes</label>
+          <input type="text" id="add-notes">
+        </div>
+      </div>
+    </div>
+    <div class="modal-footer">
+      <button class="btn-cancel" onclick="closeModal('add-modal')">Cancel</button>
+      <button class="btn-save" onclick="addLead()">Add to pipeline</button>
+    </div>
+  </div>
+</div>
+
+<script>
+const STAGES = ['lead','contacted','responded','demo','trial','paid','churned'];
+const STAGE_LABELS = {
+  lead:'Lead', contacted:'Contacted', responded:'Responded',
+  demo:'Demo booked', trial:'Trial', paid:'Paid', churned:'Churned'
+};
+
+const INITIAL_LEADS = [{"id": 1, "name": "Aerial Atelier", "category": "Aerial", "location": "Region A", "ig": "@aerialatelier_demo", "igUrl": "https://instagram.com/aerialatelier_demo", "followers": "?", "isBusiness": false, "website": "", "email": "", "phone": "", "pricing": "$10-15 / class", "notes": "Verify before outreach", "priority": "low", "stage": "lead", "lastContact": "", "nextAction": "", "log": []}, {"id": 2, "name": "Skyline Movement", "category": "Aerial", "location": "Region A", "ig": "@skylinemovement_demo", "igUrl": "https://instagram.com/skylinemovement_demo", "followers": "?", "isBusiness": false, "website": "", "email": "", "phone": "", "pricing": "$10-15 / class", "notes": "Verify before outreach", "priority": "low", "stage": "lead", "lastContact": "", "nextAction": "", "log": []}, {"id": 3, "name": "Lift Studio Co", "category": "Aerial", "location": "Region A", "ig": "@liftstudio_demo", "igUrl": "https://instagram.com/liftstudio_demo", "followers": "40", "isBusiness": false, "website": "", "email": "", "phone": "", "pricing": "$10-15 / class", "notes": "Verify before outreach", "priority": "low", "stage": "lead", "lastContact": "", "nextAction": "", "log": []}, {"id": 4, "name": "Arc Aerial Lab", "category": "Aerial", "location": "Region A", "ig": "@arcaerial_demo", "igUrl": "https://instagram.com/arcaerial_demo", "followers": "20,548", "isBusiness": true, "website": "", "email": "", "phone": "", "pricing": "$10-15 / class", "notes": "High priority — 10K+ followers", "priority": "high", "stage": "lead", "lastContact": "", "nextAction": "", "log": []}, {"id": 5, "name": "Cloud Studio", "category": "Aerial", "location": "Region A", "ig": "@cloudstudio_demo", "igUrl": "https://instagram.com/cloudstudio_demo", "followers": "?", "isBusiness": false, "website": "", "email": "", "phone": "", "pricing": "$10-15 / class", "notes": "Verify before outreach", "priority": "low", "stage": "lead", "lastContact": "", "nextAction": "", "log": []}, {"id": 6, "name": "Reform Studio One", "category": "Pilates", "location": "Region A", "ig": "@reformstudio1_demo", "igUrl": "https://instagram.com/reformstudio1_demo", "followers": "?", "isBusiness": false, "website": "", "email": "", "phone": "", "pricing": "$10-15 / class", "notes": "Verify before outreach", "priority": "low", "stage": "lead", "lastContact": "", "nextAction": "", "log": []}, {"id": 7, "name": "Pilates House A", "category": "Pilates", "location": "Region A", "ig": "@pilateshousea_demo", "igUrl": "https://instagram.com/pilateshousea_demo", "followers": "79,875", "isBusiness": true, "website": "", "email": "", "phone": "", "pricing": "$10-15 / class", "notes": "High priority — 10K+ followers", "priority": "high", "stage": "lead", "lastContact": "", "nextAction": "", "log": []}, {"id": 8, "name": "Form & Flow Studio", "category": "Pilates", "location": "Region A", "ig": "@formflow_demo", "igUrl": "https://instagram.com/formflow_demo", "followers": "?", "isBusiness": false, "website": "", "email": "", "phone": "", "pricing": "$10-15 / class", "notes": "Verify before outreach", "priority": "low", "stage": "lead", "lastContact": "", "nextAction": "", "log": []}, {"id": 9, "name": "Core Method Lab", "category": "Pilates", "location": "Region A", "ig": "@coremethod_demo", "igUrl": "https://instagram.com/coremethod_demo", "followers": "2,181", "isBusiness": true, "website": "", "email": "", "phone": "", "pricing": "$10-15 / class", "notes": "Verify before outreach", "priority": "low", "stage": "lead", "lastContact": "", "nextAction": "", "log": []}, {"id": 10, "name": "Spine Studio - North Branch", "category": "Pilates", "location": "Region A", "ig": "@spinestudio_demo", "igUrl": "https://instagram.com/spinestudio_demo", "followers": "?", "isBusiness": false, "website": "", "email": "", "phone": "", "pricing": "$10-15 / class", "notes": "Verify before outreach", "priority": "low", "stage": "lead", "lastContact": "", "nextAction": "", "log": []}, {"id": 11, "name": "Spine Studio - Central Branch", "category": "Pilates", "location": "Region A", "ig": "@spinestudio_demo", "igUrl": "https://instagram.com/spinestudio_demo", "followers": "?", "isBusiness": false, "website": "", "email": "", "phone": "", "pricing": "$10-15 / class", "notes": "Verify before outreach", "priority": "low", "stage": "lead", "lastContact": "", "nextAction": "", "log": []}, {"id": 12, "name": "Spine Studio - South Branch", "category": "Pilates", "location": "Region A", "ig": "@spinestudio_demo", "igUrl": "https://instagram.com/spinestudio_demo", "followers": "?", "isBusiness": false, "website": "", "email": "", "phone": "", "pricing": "$10-15 / class", "notes": "Verify before outreach", "priority": "low", "stage": "lead", "lastContact": "", "nextAction": "", "log": []}, {"id": 13, "name": "Pilates Atelier B", "category": "Pilates", "location": "Region A", "ig": "@pilatesatelierb_demo", "igUrl": "https://instagram.com/pilatesatelierb_demo", "followers": "0", "isBusiness": false, "website": "", "email": "", "phone": "", "pricing": "$10-15 / class", "notes": "Verify before outreach", "priority": "low", "stage": "lead", "lastContact": "", "nextAction": "", "log": []}, {"id": 14, "name": "Movement Method Co", "category": "Pilates", "location": "Region A", "ig": "@movementmethod_demo", "igUrl": "https://instagram.com/movementmethod_demo", "followers": "126", "isBusiness": true, "website": "", "email": "", "phone": "", "pricing": "$10-15 / class", "notes": "Verify before outreach", "priority": "low", "stage": "lead", "lastContact": "", "nextAction": "", "log": []}, {"id": 15, "name": "Reform Lab", "category": "Pilates", "location": "Region A", "ig": "@reformlab_demo", "igUrl": "https://instagram.com/reformlab_demo", "followers": "1", "isBusiness": false, "website": "", "email": "", "phone": "", "pricing": "$10-15 / class", "notes": "Verify before outreach", "priority": "low", "stage": "lead", "lastContact": "", "nextAction": "", "log": []}, {"id": 16, "name": "Pilates House C", "category": "Pilates", "location": "Region A", "ig": "@pilateshousec_demo", "igUrl": "https://instagram.com/pilateshousec_demo", "followers": "22,488", "isBusiness": true, "website": "", "email": "", "phone": "", "pricing": "$10-15 / class", "notes": "High priority — 10K+ followers", "priority": "high", "stage": "lead", "lastContact": "", "nextAction": "", "log": []}, {"id": 17, "name": "Reformer Studio D", "category": "Pilates", "location": "Region A", "ig": "@reformerd_demo", "igUrl": "https://instagram.com/reformerd_demo", "followers": "6,065", "isBusiness": true, "website": "https://[competitor-platform].co", "email": "", "phone": "", "pricing": "$10-15 / class", "notes": "On competitor platform — displacement target", "priority": "medium", "stage": "lead", "lastContact": "", "nextAction": "", "log": []}, {"id": 18, "name": "Pilates Society - Branch 1", "category": "Pilates", "location": "Region A", "ig": "@pilatessociety_demo", "igUrl": "https://instagram.com/pilatessociety_demo", "followers": "0", "isBusiness": false, "website": "", "email": "", "phone": "", "pricing": "$10-15 / class", "notes": "Verify before outreach", "priority": "low", "stage": "lead", "lastContact": "", "nextAction": "", "log": []}, {"id": 19, "name": "Pilates Society - Branch 2", "category": "Pilates", "location": "Region A", "ig": "@pilatessociety_demo", "igUrl": "https://instagram.com/pilatessociety_demo", "followers": "0", "isBusiness": false, "website": "", "email": "", "phone": "", "pricing": "$10-15 / class", "notes": "Verify before outreach", "priority": "low", "stage": "lead", "lastContact": "", "nextAction": "", "log": []}, {"id": 20, "name": "Method Studio E", "category": "Pilates", "location": "Region A", "ig": "@methode_demo", "igUrl": "https://instagram.com/methode_demo", "followers": "?", "isBusiness": false, "website": "", "email": "", "phone": "", "pricing": "$10-15 / class", "notes": "Verify before outreach", "priority": "low", "stage": "lead", "lastContact": "", "nextAction": "", "log": []}, {"id": 21, "name": "Pilates Studio G", "category": "Pilates", "location": "Region A", "ig": "@pilatesg_demo", "igUrl": "https://instagram.com/pilatesg_demo", "followers": "126", "isBusiness": true, "website": "", "email": "", "phone": "", "pricing": "$10-15 / class", "notes": "Verify before outreach", "priority": "low", "stage": "lead", "lastContact": "", "nextAction": "", "log": []}, {"id": 22, "name": "Studio Reform J", "category": "Pilates", "location": "Region A", "ig": "@studioreformj_demo", "igUrl": "https://instagram.com/studioreformj_demo", "followers": "62,246", "isBusiness": true, "website": "", "email": "", "phone": "", "pricing": "$10-15 / class", "notes": "High priority — 10K+ followers", "priority": "high", "stage": "lead", "lastContact": "", "nextAction": "", "log": []}, {"id": 23, "name": "Pilates Studio K", "category": "Pilates", "location": "Region A", "ig": "@pilatesk_demo", "igUrl": "https://instagram.com/pilatesk_demo", "followers": "?", "isBusiness": false, "website": "", "email": "", "phone": "", "pricing": "$10-15 / class", "notes": "Verify before outreach", "priority": "low", "stage": "lead", "lastContact": "", "nextAction": "", "log": []}, {"id": 24, "name": "Method Lab L", "category": "Pilates", "location": "Region A", "ig": "@methodlabl_demo", "igUrl": "https://instagram.com/methodlabl_demo", "followers": "?", "isBusiness": false, "website": "", "email": "", "phone": "", "pricing": "$10-15 / class", "notes": "Verify before outreach", "priority": "low", "stage": "lead", "lastContact": "", "nextAction": "", "log": []}, {"id": 25, "name": "Reform Atelier M", "category": "Pilates", "location": "Region A", "ig": "@reformatelierm_demo", "igUrl": "https://instagram.com/reformatelierm_demo", "followers": "6", "isBusiness": false, "website": "", "email": "", "phone": "", "pricing": "$10-15 / class", "notes": "Verify before outreach", "priority": "low", "stage": "lead", "lastContact": "", "nextAction": "", "log": []}, {"id": 26, "name": "Pilates House N", "category": "Pilates", "location": "Region A", "ig": "@pilateshousen_demo", "igUrl": "https://instagram.com/pilateshousen_demo", "followers": "3,087", "isBusiness": false, "website": "https://[competitor-platform].co", "email": "", "phone": "", "pricing": "$10-15 / class", "notes": "On competitor platform — displacement target", "priority": "medium", "stage": "lead", "lastContact": "", "nextAction": "", "log": []}, {"id": 27, "name": "Movement Studio O", "category": "Pilates", "location": "Region A", "ig": "@movementstudioo_demo", "igUrl": "https://instagram.com/movementstudioo_demo", "followers": "34", "isBusiness": false, "website": "", "email": "", "phone": "", "pricing": "$10-15 / class", "notes": "Verify before outreach", "priority": "low", "stage": "lead", "lastContact": "", "nextAction": "", "log": []}, {"id": 28, "name": "Pilates Studio P", "category": "Pilates", "location": "Region A", "ig": "@pilatesp_demo", "igUrl": "https://instagram.com/pilatesp_demo", "followers": "?", "isBusiness": false, "website": "", "email": "", "phone": "", "pricing": "$10-15 / class", "notes": "Verify before outreach", "priority": "low", "stage": "lead", "lastContact": "", "nextAction": "", "log": []}, {"id": 29, "name": "Reformer Lab Q", "category": "Pilates", "location": "Region A", "ig": "@reformerq_demo", "igUrl": "https://instagram.com/reformerq_demo", "followers": "610", "isBusiness": true, "website": "", "email": "", "phone": "", "pricing": "$10-15 / class", "notes": "Verify before outreach", "priority": "low", "stage": "lead", "lastContact": "", "nextAction": "", "log": []}, {"id": 30, "name": "Pilates Method R - Branch A", "category": "Pilates", "location": "Region A", "ig": "@pilatesmethodr_demo", "igUrl": "https://instagram.com/pilatesmethodr_demo", "followers": "37,600", "isBusiness": true, "website": "", "email": "", "phone": "", "pricing": "$10-15 / class", "notes": "High priority — 10K+ followers", "priority": "high", "stage": "lead", "lastContact": "", "nextAction": "", "log": []}, {"id": 31, "name": "Pilates Method R - Branch B", "category": "Pilates", "location": "Region A", "ig": "@pilatesmethodr_demo", "igUrl": "https://instagram.com/pilatesmethodr_demo", "followers": "37,600", "isBusiness": true, "website": "", "email": "", "phone": "", "pricing": "$10-15 / class", "notes": "High priority — 10K+ followers", "priority": "high", "stage": "lead", "lastContact": "", "nextAction": "", "log": []}, {"id": 32, "name": "Pilates Co S - Branch A", "category": "Pilates", "location": "Region A", "ig": "@pilatescos_demo", "igUrl": "https://instagram.com/pilatescos_demo", "followers": "179", "isBusiness": true, "website": "", "email": "", "phone": "", "pricing": "$10-15 / class", "notes": "Verify before outreach", "priority": "low", "stage": "lead", "lastContact": "", "nextAction": "", "log": []}, {"id": 33, "name": "Pilates Co S - Branch B", "category": "Pilates", "location": "Region A", "ig": "@pilatescos_demo", "igUrl": "https://instagram.com/pilatescos_demo", "followers": "179", "isBusiness": true, "website": "", "email": "", "phone": "", "pricing": "$10-15 / class", "notes": "Verify before outreach", "priority": "low", "stage": "lead", "lastContact": "", "nextAction": "", "log": []}, {"id": 34, "name": "Studio Reformer T", "category": "Pilates", "location": "Region A", "ig": "@studioreformert_demo", "igUrl": "https://instagram.com/studioreformert_demo", "followers": "?", "isBusiness": false, "website": "", "email": "", "phone": "", "pricing": "$10-15 / class", "notes": "Verify before outreach", "priority": "low", "stage": "lead", "lastContact": "", "nextAction": "", "log": []}, {"id": 35, "name": "Breath Yoga Studio", "category": "Yoga", "location": "Region A", "ig": "@breathyoga_demo", "igUrl": "https://instagram.com/breathyoga_demo", "followers": "?", "isBusiness": false, "website": "", "email": "", "phone": "", "pricing": "$10-12 / class", "notes": "Verify before outreach", "priority": "low", "stage": "lead", "lastContact": "", "nextAction": "", "log": []}, {"id": 36, "name": "Vinyasa House", "category": "Yoga", "location": "Region A", "ig": "@vinyasahouse_demo", "igUrl": "https://instagram.com/vinyasahouse_demo", "followers": "0", "isBusiness": true, "website": "", "email": "", "phone": "", "pricing": "$10-12 / class", "notes": "Verify before outreach", "priority": "low", "stage": "lead", "lastContact": "", "nextAction": "", "log": []}, {"id": 37, "name": "Yoga Atelier", "category": "Yoga", "location": "Region A", "ig": "@yogaatelier_demo", "igUrl": "https://instagram.com/yogaatelier_demo", "followers": "?", "isBusiness": false, "website": "", "email": "", "phone": "", "pricing": "$10-12 / class", "notes": "Verify before outreach", "priority": "low", "stage": "lead", "lastContact": "", "nextAction": "", "log": []}, {"id": 38, "name": "Mindful Movement Co", "category": "Yoga", "location": "Region A", "ig": "@mindfulmovement_demo", "igUrl": "https://instagram.com/mindfulmovement_demo", "followers": "246", "isBusiness": false, "website": "", "email": "", "phone": "", "pricing": "$10-12 / class", "notes": "Verify before outreach", "priority": "low", "stage": "lead", "lastContact": "", "nextAction": "", "log": []}, {"id": 39, "name": "Asana Lab", "category": "Yoga", "location": "Region A", "ig": "@asanalab_demo", "igUrl": "https://instagram.com/asanalab_demo", "followers": "?", "isBusiness": false, "website": "", "email": "", "phone": "", "pricing": "$10-12 / class", "notes": "Verify before outreach", "priority": "low", "stage": "lead", "lastContact": "", "nextAction": "", "log": []}, {"id": 40, "name": "Yoga Collective", "category": "Yoga", "location": "Region A", "ig": "@yogacollective_demo", "igUrl": "https://instagram.com/yogacollective_demo", "followers": "15", "isBusiness": false, "website": "", "email": "", "phone": "", "pricing": "$10-12 / class", "notes": "Verify before outreach", "priority": "low", "stage": "lead", "lastContact": "", "nextAction": "", "log": []}, {"id": 41, "name": "Sense Yoga Space", "category": "Yoga", "location": "Region A", "ig": "@senseyoga_demo", "igUrl": "https://instagram.com/senseyoga_demo", "followers": "13,081", "isBusiness": true, "website": "", "email": "", "phone": "", "pricing": "$10-12 / class", "notes": "High priority — 10K+ followers", "priority": "high", "stage": "lead", "lastContact": "", "nextAction": "", "log": []}];
+
+// ── STATE ──
+let leads = [];
+let weeklyData = [];
+let nextId = 100;
+let currentLeadId = null;
+let pipeFilter = 'all';
+let tblFilter = 'all';
+let sortCol = 'priority';
+let sortDir = 1;
+
+function save() {
+  try {
+    localStorage.setItem('studio_leads_demo', JSON.stringify(leads));
+    localStorage.setItem('studio_weekly_demo', JSON.stringify(weeklyData));
+    localStorage.setItem('studio_nextid_demo', nextId);
+  } catch(e) {}
+}
+
+function load() {
+  try {
+    const l = localStorage.getItem('studio_leads_demo');
+    const w = localStorage.getItem('studio_weekly_demo');
+    const n = localStorage.getItem('studio_nextid_demo');
+    if (l) leads = JSON.parse(l);
+    else leads = JSON.parse(JSON.stringify(INITIAL_LEADS));
+    if (w) weeklyData = JSON.parse(w);
+    if (n) nextId = parseInt(n);
+    else nextId = 100;
+  } catch(e) {
+    leads = JSON.parse(JSON.stringify(INITIAL_LEADS));
+  }
+}
+
+// ── NAV ──
+function switchView(v) {
+  document.querySelectorAll('.view').forEach(el => el.classList.remove('active'));
+  document.querySelectorAll('.nav-tab').forEach(el => el.classList.remove('active'));
+  document.getElementById('view-' + v).classList.add('active');
+  document.querySelectorAll('.nav-tab').forEach(el => {
+    if (el.textContent.toLowerCase().includes(v === 'dashboard' ? 'dash' : v === 'pipeline' ? 'pipe' : 'lead')) el.classList.add('active');
+  });
+  // fix: match by onclick
+  document.querySelectorAll('.nav-tab').forEach(el => {
+    if (el.getAttribute('onclick') && el.getAttribute('onclick').includes(v)) el.classList.add('active');
+  });
+  renderAll();
+}
+
+// ── RENDER ALL ──
+function renderAll() {
+  renderDashboard();
+  renderPipeline();
+  renderTable();
+  updateNav();
+}
+
+function updateNav() {
+  const paid = leads.filter(l => l.stage === 'paid').length;
+  const trial = leads.filter(l => l.stage === 'trial').length;
+  document.getElementById('nav-paid').textContent = paid;
+  document.getElementById('nav-trial').textContent = trial;
+}
+
+// ── DASHBOARD ──
+function renderDashboard() {
+  const total = leads.length;
+  const contacted = leads.filter(l => l.stage !== 'lead').length;
+  const responded = leads.filter(l => ['responded','demo','trial','paid'].includes(l.stage)).length;
+  const trial = leads.filter(l => l.stage === 'trial').length;
+  const paid = leads.filter(l => l.stage === 'paid').length;
+  const rr = contacted > 0 ? Math.round(responded/contacted*100) + '%' : '—';
+
+  document.getElementById('m-total').textContent = total;
+  document.getElementById('m-contacted').textContent = contacted;
+  document.getElementById('m-trial').textContent = trial;
+  document.getElementById('m-paid').textContent = paid;
+  document.getElementById('m-rr').textContent = rr;
+
+  // funnel
+  const counts = {};
+  STAGES.forEach(s => counts[s] = leads.filter(l => l.stage === s).length);
+  const max = Math.max(...Object.values(counts), 1);
+  const funnel = document.getElementById('funnel');
+  funnel.innerHTML = STAGES.map(s => `
+    <div class="funnel-row">
+      <div class="funnel-label">${STAGE_LABELS[s]}</div>
+      <div class="funnel-bar-wrap">
+        <div class="funnel-bar" style="width:${Math.max(counts[s]/max*100,2)}%">
+          <span class="funnel-n">${counts[s]}</span>
+        </div>
+      </div>
+    </div>`).join('');
+
+  // category
+  const cats = {};
+  leads.forEach(l => cats[l.category] = (cats[l.category]||0)+1);
+  document.getElementById('cat-grid').innerHTML = Object.entries(cats).sort((a,b)=>b[1]-a[1]).map(([k,v])=>`
+    <div class="cat-chip">
+      <div class="n">${v}</div>
+      <div class="l">${k}</div>
+    </div>`).join('');
+
+  // priority
+  const hi = leads.filter(l=>l.priority==='high').length;
+  const me = leads.filter(l=>l.priority==='medium').length;
+  const lo = leads.filter(l=>l.priority==='low').length;
+  document.getElementById('pri-table').innerHTML = `
+    <tr><td><span class="pri-dot high"></span>High priority</td><td style="font-family:var(--mono);text-align:right">${hi}</td></tr>
+    <tr><td><span class="pri-dot medium"></span>Medium priority</td><td style="font-family:var(--mono);text-align:right">${me}</td></tr>
+    <tr><td><span class="pri-dot low"></span>Low / verify first</td><td style="font-family:var(--mono);text-align:right">${lo}</td></tr>`;
+
+  // high pri list
+  const highLeads = leads.filter(l => l.priority === 'high' && l.stage !== 'paid').slice(0, 8);
+  document.getElementById('high-pri-list').innerHTML = highLeads.length ? highLeads.map(l => `
+    <div style="display:flex;align-items:center;justify-content:space-between;padding:7px 0;border-bottom:1px solid var(--surface2);cursor:pointer" onclick="openDetail(${l.id})">
+      <div>
+        <div style="font-size:12px;font-weight:600">${l.name}</div>
+        <div style="font-size:10px;color:var(--ink3)">${l.ig} · ${l.followers} followers</div>
+      </div>
+      <span class="stage-badge stage-${l.stage}">${STAGE_LABELS[l.stage]}</span>
+    </div>`).join('') : '<div class="log-empty">No high priority leads remaining — all actioned or paid!</div>';
+
+  // rezerv list
+  const rezervLeads = leads.filter(l => l.website && l.website.includes('rezerv'));
+  document.getElementById('rezerv-list').innerHTML = rezervLeads.length ? rezervLeads.map(l => `
+    <div style="display:flex;align-items:center;justify-content:space-between;padding:7px 0;border-bottom:1px solid var(--surface2);cursor:pointer" onclick="openDetail(${l.id})">
+      <div>
+        <div style="font-size:12px;font-weight:600">${l.name}</div>
+        <div style="font-size:10px;color:var(--ink3)">${l.ig} · currently on competitor</div>
+      </div>
+      <span class="stage-badge stage-${l.stage}">${STAGE_LABELS[l.stage]}</span>
+    </div>`).join('') : '<div class="log-empty">None detected.</div>';
+
+  // weekly history
+  renderWeekHistory();
+}
+
+function renderWeekHistory() {
+  const el = document.getElementById('week-history');
+  if (!weeklyData.length) { el.innerHTML = '<div class="log-empty">No weekly data yet. Fill in above and save.</div>'; return; }
+  el.innerHTML = weeklyData.slice().reverse().map(w => {
+    const rr = w.outreach > 0 ? Math.round(w.responses/w.outreach*100) + '%' : '—';
+    return `<div class="week-hist-row">
+      <span class="week-hist-date">${w.date}</span>
+      <span class="week-stat">${w.leads} leads</span>
+      <span class="week-stat">${w.outreach} outreach</span>
+      <span class="week-stat">${w.responses} replies</span>
+      <span class="week-stat">${w.calls} calls</span>
+      <span class="week-stat">${w.trials} trials</span>
+      <span class="week-rate">RR: ${rr}</span>
+    </div>`;
+  }).join('');
+}
+
+function saveWeek() {
+  const entry = {
+    date: new Date().toLocaleDateString('en-GB', {day:'2-digit',month:'short',year:'numeric'}),
+    leads: parseInt(document.getElementById('wi-leads').value)||0,
+    outreach: parseInt(document.getElementById('wi-outreach').value)||0,
+    responses: parseInt(document.getElementById('wi-responses').value)||0,
+    calls: parseInt(document.getElementById('wi-calls').value)||0,
+    trials: parseInt(document.getElementById('wi-trials').value)||0,
+  };
+  weeklyData.push(entry);
+  save();
+  ['wi-leads','wi-outreach','wi-responses','wi-calls','wi-trials'].forEach(id => document.getElementById(id).value = '');
+  renderWeekHistory();
+}
+
+// ── PIPELINE ──
+function setPipeFilter(f, btn) {
+  pipeFilter = f;
+  document.querySelectorAll('.pipeline-toolbar .filter-btn').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+  renderPipeline();
+}
+
+function getFilteredLeads(filterVal, searchId) {
+  const q = (document.getElementById(searchId)?.value || '').toLowerCase();
+  return leads.filter(l => {
+    const matchSearch = !q || l.name.toLowerCase().includes(q) || l.ig.toLowerCase().includes(q) || l.category.toLowerCase().includes(q);
+    let matchFilter = true;
+    if (filterVal === 'high') matchFilter = l.priority === 'high';
+    else if (filterVal === 'rezerv') matchFilter = l.website && l.website.includes('rezerv');
+    else if (filterVal !== 'all') matchFilter = l.category === filterVal;
+    return matchSearch && matchFilter;
+  });
+}
+
+function renderPipeline() {
+  const filtered = getFilteredLeads(pipeFilter, 'pipe-search');
+  const board = document.getElementById('pipeline-board');
+  board.innerHTML = STAGES.map(stage => {
+    const cards = filtered.filter(l => l.stage === stage);
+    return `<div class="stage-col s-${stage}">
+      <div class="stage-header">
+        <span class="stage-name">${STAGE_LABELS[stage]}</span>
+        <span class="stage-count">${cards.length}</span>
+      </div>
+      <div class="stage-cards">
+        ${cards.length ? cards.map(l => `
+          <div class="lead-card priority-${l.priority}" onclick="openDetail(${l.id})">
+            <div class="lead-card-name">${l.name}</div>
+            <div class="lead-card-meta">
+              <span class="lead-tag ${l.category.toLowerCase()}">${l.category}</span>
+              ${l.website && l.website.includes('rezerv') ? '<span class="lead-tag rezerv">Competitor</span>' : ''}
+            </div>
+            <div class="lead-followers">${l.followers !== '?' ? l.followers + ' followers' : 'followers unknown'}</div>
+            ${l.nextAction ? `<div class="lead-date" style="color:var(--kuyy-dark);font-weight:500">→ ${l.nextAction}</div>` : ''}
+            ${l.lastContact ? `<div class="lead-date">Last: ${l.lastContact}</div>` : ''}
+          </div>`).join('') : '<div class="empty-col">Empty</div>'}
+      </div>
+    </div>`;
+  }).join('');
+}
+
+// ── TABLE ──
+function setTblFilter(f, btn) {
+  tblFilter = f;
+  document.querySelectorAll('.leads-toolbar .filter-btn').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+  renderTable();
+}
+
+function sortTable(col) {
+  if (sortCol === col) sortDir *= -1;
+  else { sortCol = col; sortDir = 1; }
+  renderTable();
+}
+
+function renderTable() {
+  const filtered = getFilteredLeads(tblFilter, 'tbl-search');
+  const priOrder = {high:0,medium:1,low:2};
+  const sorted = [...filtered].sort((a,b) => {
+    let va = a[sortCol], vb = b[sortCol];
+    if (sortCol === 'priority') { va = priOrder[a.priority]||2; vb = priOrder[b.priority]||2; }
+    if (sortCol === 'followers') {
+      va = parseInt((a.followers||'0').replace(/,/g,''))||0;
+      vb = parseInt((b.followers||'0').replace(/,/g,''))||0;
+    }
+    if (va < vb) return -sortDir;
+    if (va > vb) return sortDir;
+    return 0;
+  });
+  document.getElementById('leads-tbody').innerHTML = sorted.map(l => `
+    <tr onclick="openDetail(${l.id})" style="cursor:pointer">
+      <td><span class="pri-badge ${l.priority}"></span></td>
+      <td style="font-weight:600">${l.name}</td>
+      <td><span class="lead-tag ${l.category.toLowerCase()}">${l.category}</span></td>
+      <td style="color:var(--ink3)">${l.location}</td>
+      <td><a class="ig-link" href="${l.igUrl}" target="_blank" onclick="event.stopPropagation()">${l.ig}</a></td>
+      <td style="font-family:var(--mono);font-size:11px">${l.followers}</td>
+      <td><span class="stage-badge stage-${l.stage}">${STAGE_LABELS[l.stage]}</span></td>
+      <td style="font-size:11px;color:var(--kuyy-dark)">${l.nextAction || '—'}</td>
+      <td style="font-size:11px;color:var(--ink3);font-family:var(--mono)">${l.lastContact || '—'}</td>
+    </tr>`).join('');
+}
+
+// ── DETAIL MODAL ──
+function openDetail(id) {
+  const l = leads.find(x => x.id === id);
+  if (!l) return;
+  currentLeadId = id;
+  document.getElementById('dm-name').textContent = l.name;
+  document.getElementById('dm-sub').textContent = `${l.category} · ${l.location} · ${l.followers} followers`;
+  document.getElementById('dm-stage').value = l.stage;
+  document.getElementById('dm-lastcontact').value = l.lastContact || '';
+  document.getElementById('dm-nextaction').value = l.nextAction || '';
+  document.getElementById('dm-priority').value = l.priority;
+  document.getElementById('dm-ig').value = l.ig;
+  document.getElementById('dm-phone').value = l.phone || '';
+  document.getElementById('dm-email').value = l.email || '';
+  document.getElementById('dm-website').value = l.website || '';
+  document.getElementById('dm-notes').value = l.notes || '';
+  renderLog(l);
+  document.getElementById('detail-modal').classList.add('open');
+}
+
+function renderLog(l) {
+  const log = l.log || [];
+  document.getElementById('dm-log').innerHTML = log.length
+    ? log.slice().reverse().map(e => `<div class="log-entry"><div class="log-date">${e.date}</div><div class="log-text">${e.text}</div></div>`).join('')
+    : '<div class="log-empty">No contact log yet.</div>';
+}
+
+function addLog() {
+  const text = document.getElementById('dm-log-input').value.trim();
+  if (!text || !currentLeadId) return;
+  const l = leads.find(x => x.id === currentLeadId);
+  if (!l) return;
+  if (!l.log) l.log = [];
+  l.log.push({ date: new Date().toLocaleDateString('en-GB',{day:'2-digit',month:'short',year:'numeric',hour:'2-digit',minute:'2-digit'}), text });
+  document.getElementById('dm-log-input').value = '';
+  renderLog(l);
+  save();
+}
+
+function saveLead() {
+  const l = leads.find(x => x.id === currentLeadId);
+  if (!l) return;
+  l.stage = document.getElementById('dm-stage').value;
+  l.lastContact = document.getElementById('dm-lastcontact').value;
+  l.nextAction = document.getElementById('dm-nextaction').value;
+  l.priority = document.getElementById('dm-priority').value;
+  l.ig = document.getElementById('dm-ig').value;
+  l.phone = document.getElementById('dm-phone').value;
+  l.email = document.getElementById('dm-email').value;
+  l.website = document.getElementById('dm-website').value;
+  l.notes = document.getElementById('dm-notes').value;
+  save();
+  closeModal('detail-modal');
+  renderAll();
+}
+
+function deleteLead() {
+  if (!confirm('Delete this studio from your pipeline?')) return;
+  leads = leads.filter(x => x.id !== currentLeadId);
+  save();
+  closeModal('detail-modal');
+  renderAll();
+}
+
+// ── ADD MODAL ──
+function openAddModal() {
+  ['add-name','add-location','add-ig','add-followers','add-phone','add-email','add-website','add-notes'].forEach(id => {
+    document.getElementById(id).value = '';
+  });
+  document.getElementById('add-modal').classList.add('open');
+}
+
+function addLead() {
+  const name = document.getElementById('add-name').value.trim();
+  if (!name) { alert('Studio name is required'); return; }
+  const newLead = {
+    id: nextId++,
+    name,
+    category: document.getElementById('add-category').value,
+    location: document.getElementById('add-location').value,
+    ig: document.getElementById('add-ig').value,
+    igUrl: 'https://instagram.com/' + (document.getElementById('add-ig').value.replace('@','')),
+    followers: document.getElementById('add-followers').value || '?',
+    isBusiness: false,
+    website: document.getElementById('add-website').value,
+    email: document.getElementById('add-email').value,
+    phone: document.getElementById('add-phone').value,
+    pricing: '',
+    notes: document.getElementById('add-notes').value,
+    priority: document.getElementById('add-priority').value,
+    stage: 'lead',
+    lastContact: '',
+    nextAction: '',
+    log: []
+  };
+  leads.push(newLead);
+  save();
+  closeModal('add-modal');
+  renderAll();
+}
+
+function closeModal(id) {
+  document.getElementById(id).classList.remove('open');
+}
+
+document.querySelectorAll('.modal-overlay').forEach(el => {
+  el.addEventListener('click', e => { if (e.target === el) el.classList.remove('open'); });
+});
+
+// ── INIT ──
+load();
+renderAll();
+</script>
+</body>
+</html>

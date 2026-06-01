@@ -1,0 +1,455 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Positioning Framework — Category Definition Canvas</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Fraunces:opsz,ital,wght@9..144,0,400;9..144,0,500;9..144,0,600;9..144,1,400&family=Spline+Sans:wght@400;500;600&display=swap');
+
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+:root {
+  --bg: #F4F1EA;
+  --bg-2: #EBE7DC;
+  --ink: #23241F;
+  --ink-soft: #4A4B43;
+  --forest: #2C4A37;
+  --forest-deep: #1E3327;
+  --beige: #C9A77C;
+  --beige-soft: #D9C4A6;
+  --line: #D8D2C4;
+  --white: #FBFAF6;
+  --serif: 'Fraunces', serif;
+  --sans: 'Spline Sans', sans-serif;
+}
+
+html { scroll-behavior: smooth; }
+body { font-family: var(--sans); background: var(--bg); color: var(--ink); line-height: 1.7; font-size: 15px; }
+
+/* ── TOP BAR ── */
+.topbar {
+  position: sticky; top: 0; z-index: 50;
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 14px 36px;
+  background: rgba(244,241,234,0.9);
+  backdrop-filter: blur(10px);
+  border-bottom: 1px solid var(--line);
+}
+.tb-left { display: flex; align-items: baseline; gap: 12px; }
+.tb-title { font-family: var(--serif); font-size: 16px; font-weight: 600; color: var(--forest-deep); }
+.tb-tag { font-size: 10px; text-transform: uppercase; letter-spacing: 2px; color: var(--beige); font-weight: 600; }
+.tb-back { font-size: 12px; color: var(--ink-soft); text-decoration: none; text-transform: uppercase; letter-spacing: 1.5px; }
+.tb-back:hover { color: var(--forest); }
+
+/* ── HERO ── */
+.hero { max-width: 1000px; margin: 0 auto; padding: 64px 36px 40px; }
+.hero-eyebrow {
+  display: inline-block;
+  font-size: 11px; text-transform: uppercase; letter-spacing: 2.5px;
+  color: var(--forest); font-weight: 600; margin-bottom: 18px;
+  padding: 5px 12px; border: 1px solid var(--beige); border-radius: 2px;
+}
+.hero-title {
+  font-family: var(--serif); font-size: 48px; font-weight: 600;
+  line-height: 1.1; color: var(--ink); margin-bottom: 16px; letter-spacing: -1px;
+}
+.hero-title em { font-style: italic; color: var(--forest); }
+.hero-sub { font-size: 17px; color: var(--ink-soft); max-width: 620px; line-height: 1.6; }
+
+.how-to {
+  margin-top: 28px;
+  display: flex; gap: 10px; flex-wrap: wrap;
+}
+.how-pill {
+  font-size: 12px; color: var(--ink-soft);
+  background: var(--white); border: 1px solid var(--line);
+  padding: 7px 14px; border-radius: 20px;
+}
+.how-pill b { color: var(--forest); }
+
+/* ── MAIN ── */
+.main { max-width: 1000px; margin: 0 auto; padding: 20px 36px 100px; }
+
+.section-rule {
+  display: flex; align-items: center; gap: 14px; margin: 48px 0 28px;
+}
+.sr-label { font-size: 11px; text-transform: uppercase; letter-spacing: 2.5px; color: var(--forest); font-weight: 600; white-space: nowrap; }
+.sr-line { flex: 1; height: 1px; background: var(--line); }
+.sr-num { font-family: var(--serif); font-size: 13px; color: var(--beige); font-weight: 600; }
+
+.lead-text { font-size: 16px; color: var(--ink-soft); max-width: 680px; margin-bottom: 8px; }
+
+/* ── THE FRAMEWORK GRID ── */
+.framework {
+  background: var(--white);
+  border: 1px solid var(--line);
+  border-radius: 12px;
+  overflow: hidden;
+  margin: 28px 0;
+}
+.fw-header {
+  background: var(--forest-deep);
+  padding: 18px 24px;
+  display: flex; align-items: center; justify-content: space-between;
+}
+.fw-title { font-family: var(--serif); font-size: 18px; color: var(--white); font-weight: 600; }
+.fw-title em { font-style: italic; color: var(--beige); }
+.fw-legend { display: flex; gap: 16px; }
+.fw-legend-item { font-size: 10px; color: rgba(255,255,255,0.5); display: flex; align-items: center; gap: 5px; }
+.fw-legend-dot { width: 8px; height: 8px; border-radius: 2px; }
+
+.fw-row {
+  display: grid;
+  grid-template-columns: 200px 1fr 1fr;
+  border-bottom: 1px solid var(--line);
+}
+.fw-row:last-child { border-bottom: none; }
+.fw-rowlabel {
+  padding: 18px 20px;
+  background: var(--bg-2);
+  border-right: 1px solid var(--line);
+}
+.fw-rl-num { font-family: var(--serif); font-size: 12px; color: var(--beige); font-weight: 600; margin-bottom: 4px; }
+.fw-rl-name { font-weight: 600; color: var(--ink); font-size: 14px; margin-bottom: 4px; }
+.fw-rl-desc { font-size: 11px; color: var(--ink-soft); line-height: 1.45; }
+
+.fw-cell { padding: 18px 20px; border-right: 1px solid var(--line); }
+.fw-cell:last-child { border-right: none; }
+.fw-cell-tag {
+  font-size: 9px; text-transform: uppercase; letter-spacing: 1.5px;
+  font-weight: 600; margin-bottom: 8px;
+}
+.tag-template { color: var(--beige); }
+.tag-applied { color: var(--forest); }
+.fw-cell-content { font-size: 13px; color: var(--ink-soft); line-height: 1.55; }
+.fw-cell-content.template { font-style: italic; color: var(--beige); }
+.fw-cell-content b { color: var(--ink); font-weight: 600; }
+
+/* ── POSITIONING STATEMENT ── */
+.statement {
+  background: var(--forest-deep);
+  border-radius: 12px;
+  padding: 32px 36px;
+  margin: 28px 0;
+  position: relative;
+  overflow: hidden;
+}
+.statement::before {
+  content: '"';
+  position: absolute;
+  top: 10px; left: 20px;
+  font-family: var(--serif);
+  font-size: 100px;
+  color: rgba(201,167,124,0.15);
+  line-height: 1;
+}
+.statement-label { font-size: 10px; text-transform: uppercase; letter-spacing: 2px; color: var(--beige); font-weight: 600; margin-bottom: 14px; }
+.statement-text {
+  font-family: var(--serif);
+  font-size: 24px;
+  line-height: 1.5;
+  color: var(--white);
+  font-weight: 400;
+  position: relative;
+}
+.statement-text b { color: var(--beige); font-weight: 600; font-style: italic; }
+
+/* ── COMPETITIVE MAP ── */
+.map-wrap {
+  background: var(--white);
+  border: 1px solid var(--line);
+  border-radius: 12px;
+  padding: 28px;
+  margin: 28px 0;
+}
+.map-title { font-family: var(--serif); font-size: 18px; font-weight: 600; margin-bottom: 4px; }
+.map-sub { font-size: 13px; color: var(--ink-soft); margin-bottom: 24px; }
+.map-grid {
+  position: relative;
+  aspect-ratio: 16/10;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  background:
+    linear-gradient(var(--bg-2) 1px, transparent 1px),
+    linear-gradient(90deg, var(--bg-2) 1px, transparent 1px);
+  background-size: 25% 25%;
+}
+.map-axis-x, .map-axis-y { position: absolute; font-size: 10px; text-transform: uppercase; letter-spacing: 1.5px; color: var(--ink-soft); font-weight: 600; }
+.map-axis-x.left { bottom: 8px; left: 12px; }
+.map-axis-x.right { bottom: 8px; right: 12px; }
+.map-axis-y.top { top: 8px; left: 12px; }
+.map-axis-y.bottom { bottom: 28px; left: 12px; }
+.map-dot {
+  position: absolute;
+  transform: translate(-50%, -50%);
+  display: flex; flex-direction: column; align-items: center; gap: 4px;
+}
+.map-dot-circle {
+  width: 16px; height: 16px; border-radius: 50%;
+  border: 2px solid var(--white);
+  box-shadow: 0 1px 4px rgba(0,0,0,0.15);
+}
+.map-dot-label { font-size: 10px; font-weight: 600; color: var(--ink); white-space: nowrap; background: rgba(251,250,246,0.85); padding: 1px 5px; border-radius: 3px; }
+.dot-us { background: var(--forest); }
+.dot-comp { background: var(--beige); }
+.dot-comp2 { background: var(--ink-soft); }
+
+/* ── CALLOUT ── */
+.note {
+  background: var(--bg-2);
+  border-left: 3px solid var(--beige);
+  border-radius: 0 6px 6px 0;
+  padding: 16px 20px;
+  margin: 24px 0;
+  font-size: 13.5px;
+  color: var(--ink-soft);
+}
+.note b { color: var(--forest); }
+
+/* ── REUSE STEPS ── */
+.steps { display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; margin: 24px 0; }
+.step { background: var(--white); border: 1px solid var(--line); border-radius: 8px; padding: 16px; }
+.step-num { font-family: var(--serif); font-size: 28px; color: var(--beige); font-weight: 600; line-height: 1; margin-bottom: 8px; }
+.step-title { font-weight: 600; font-size: 13px; color: var(--ink); margin-bottom: 4px; }
+.step-desc { font-size: 11.5px; color: var(--ink-soft); line-height: 1.5; }
+
+footer { background: var(--forest-deep); padding: 40px 36px; text-align: center; }
+.foot-title { font-family: var(--serif); font-style: italic; font-size: 22px; color: var(--white); margin-bottom: 6px; }
+.foot-note { font-size: 11px; color: rgba(255,255,255,0.3); font-family: var(--sans); text-transform: uppercase; letter-spacing: 1.5px; }
+
+@media (max-width: 768px) {
+  .hero-title { font-size: 32px; }
+  .fw-row { grid-template-columns: 1fr; }
+  .fw-rowlabel { border-right: none; border-bottom: 1px solid var(--line); }
+  .fw-cell { border-right: none; border-bottom: 1px solid var(--line); }
+  .steps { grid-template-columns: 1fr 1fr; }
+  .statement-text { font-size: 18px; }
+}
+</style>
+</head>
+<body>
+
+<header class="topbar">
+  <div class="tb-left">
+    <span class="tb-title">Positioning Framework</span>
+    <span class="tb-tag">Reusable Canvas</span>
+  </div>
+  <a href="index.html" class="tb-back">← Portfolio</a>
+</header>
+
+<div class="hero">
+  <span class="hero-eyebrow">Strategy Framework · Worked Example</span>
+  <h1 class="hero-title">The Category<br><em>Positioning Canvas</em></h1>
+  <p class="hero-sub">A repeatable framework for defining where a product sits in its market — and why that position is defensible. Shown here applied to an anonymized early-stage SaaS engagement.</p>
+  <div class="how-to">
+    <span class="how-pill"><b>Reusable</b> across brands &amp; categories</span>
+    <span class="how-pill"><b>6 layers</b> from market to message</span>
+    <span class="how-pill">Demonstrated with <b>1 anonymized case</b></span>
+  </div>
+</div>
+
+<div class="main">
+
+  <div class="section-rule">
+    <span class="sr-num">01</span>
+    <span class="sr-label">The Framework</span>
+    <span class="sr-line"></span>
+  </div>
+  <p class="lead-text">Six layers, each answering one question. The left column is the reusable template; the right shows it applied to the case. Work top to bottom — each layer constrains the next.</p>
+
+  <div class="framework">
+    <div class="fw-header">
+      <div class="fw-title">Positioning Canvas <em>— applied</em></div>
+      <div class="fw-legend">
+        <div class="fw-legend-item"><span class="fw-legend-dot" style="background:var(--beige)"></span>Template</div>
+        <div class="fw-legend-item"><span class="fw-legend-dot" style="background:var(--forest)"></span>Applied example</div>
+      </div>
+    </div>
+
+    <div class="fw-row">
+      <div class="fw-rowlabel">
+        <div class="fw-rl-num">Layer 1</div>
+        <div class="fw-rl-name">Market frame</div>
+        <div class="fw-rl-desc">What market are we actually in — as the customer sees it?</div>
+      </div>
+      <div class="fw-cell">
+        <div class="fw-cell-tag tag-template">Template prompt</div>
+        <div class="fw-cell-content template">"Customers think they're buying [X]. The real job is [Y]."</div>
+      </div>
+      <div class="fw-cell">
+        <div class="fw-cell-tag tag-applied">Applied</div>
+        <div class="fw-cell-content">Studios think they're buying <b>booking software</b>. The real job is <b>running and growing the business</b> — software is only half of it.</div>
+      </div>
+    </div>
+
+    <div class="fw-row">
+      <div class="fw-rowlabel">
+        <div class="fw-rl-num">Layer 2</div>
+        <div class="fw-rl-name">Category definition</div>
+        <div class="fw-rl-desc">Are we competing in an existing category or defining a new one?</div>
+      </div>
+      <div class="fw-cell">
+        <div class="fw-cell-tag tag-template">Template prompt</div>
+        <div class="fw-cell-content template">"Not another [old category]. A [new category] that does [expanded job]."</div>
+      </div>
+      <div class="fw-cell">
+        <div class="fw-cell-tag tag-applied">Applied</div>
+        <div class="fw-cell-content">Not another booking tool. An <b>operating layer</b> — the infrastructure underneath an entire activity category, including demand generation.</div>
+      </div>
+    </div>
+
+    <div class="fw-row">
+      <div class="fw-rowlabel">
+        <div class="fw-rl-num">Layer 3</div>
+        <div class="fw-rl-name">Primary contrast</div>
+        <div class="fw-rl-desc">Who do we define ourselves against — and on what axis?</div>
+      </div>
+      <div class="fw-cell">
+        <div class="fw-cell-tag tag-template">Template prompt</div>
+        <div class="fw-cell-content template">"Incumbents give you [X]. We give you [X] + [the missing thing]."</div>
+      </div>
+      <div class="fw-cell">
+        <div class="fw-cell-tag tag-applied">Applied</div>
+        <div class="fw-cell-content">Incumbents give you <b>tools to manage what exists</b>. We give you tools <b>plus a demand network</b> — a front door, not just a back office.</div>
+      </div>
+    </div>
+
+    <div class="fw-row">
+      <div class="fw-rowlabel">
+        <div class="fw-rl-num">Layer 4</div>
+        <div class="fw-rl-name">Unfair advantage</div>
+        <div class="fw-rl-desc">What can we claim that competitors structurally cannot?</div>
+      </div>
+      <div class="fw-cell">
+        <div class="fw-cell-tag tag-template">Template prompt</div>
+        <div class="fw-cell-content template">"Only we have [structural asset] because [reason competitors can't copy it]."</div>
+      </div>
+      <div class="fw-cell">
+        <div class="fw-cell-tag tag-applied">Applied</div>
+        <div class="fw-cell-content">Only we have a <b>live consumer demand network</b> (200K+ active users) — competitors are pure B2B tools and can't bolt on demand.</div>
+      </div>
+    </div>
+
+    <div class="fw-row">
+      <div class="fw-rowlabel">
+        <div class="fw-rl-num">Layer 5</div>
+        <div class="fw-rl-name">Proof anchor</div>
+        <div class="fw-rl-desc">What evidence makes the position believable, not aspirational?</div>
+      </div>
+      <div class="fw-cell">
+        <div class="fw-cell-tag tag-template">Template prompt</div>
+        <div class="fw-cell-content template">"[Concrete metric / case] proves the position is real today."</div>
+      </div>
+      <div class="fw-cell">
+        <div class="fw-cell-tag tag-applied">Applied</div>
+        <div class="fw-cell-content">A <b>founder-operated 7-branch studio chain</b> scaled entirely on the platform — proof the operating layer works in the wild.</div>
+      </div>
+    </div>
+
+    <div class="fw-row">
+      <div class="fw-rowlabel">
+        <div class="fw-rl-num">Layer 6</div>
+        <div class="fw-rl-name">Message</div>
+        <div class="fw-rl-desc">The one line that compresses all five layers above.</div>
+      </div>
+      <div class="fw-cell">
+        <div class="fw-cell-tag tag-template">Template prompt</div>
+        <div class="fw-cell-content template">"[Verb] the [thing]. [Verb] the [bigger thing]."</div>
+      </div>
+      <div class="fw-cell">
+        <div class="fw-cell-tag tag-applied">Applied</div>
+        <div class="fw-cell-content"><b>"Run the studio. Grow the business."</b> — captures ops + growth in four words.</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="section-rule">
+    <span class="sr-num">02</span>
+    <span class="sr-label">The Statement</span>
+    <span class="sr-line"></span>
+  </div>
+  <p class="lead-text">When all six layers resolve, they compress into a single positioning statement — the north star every piece of messaging traces back to.</p>
+
+  <div class="statement">
+    <div class="statement-label">Positioning Statement · Applied Example</div>
+    <div class="statement-text">For boutique studios that have outgrown chat-based booking, <b>the platform is the operating layer</b> that runs operations <b>and</b> grows demand — because unlike booking tools, it comes with a live network of activity-seekers already looking to book.</div>
+  </div>
+
+  <div class="section-rule">
+    <span class="sr-num">03</span>
+    <span class="sr-label">Competitive Map</span>
+    <span class="sr-line"></span>
+  </div>
+  <p class="lead-text">The position visualized. Two axes chosen to make the whitespace obvious — and to place us alone in the corner that matters.</p>
+
+  <div class="map-wrap">
+    <div class="map-title">Where each player sits</div>
+    <div class="map-sub">Axis chosen so the defensible whitespace is visually undeniable.</div>
+    <div class="map-grid">
+      <span class="map-axis-y top">↑ Grows demand</span>
+      <span class="map-axis-y bottom">↓ Manages only</span>
+      <span class="map-axis-x left">Single-purpose →</span>
+      <span class="map-axis-x right">Full operating layer</span>
+
+      <!-- Us: top right -->
+      <div class="map-dot" style="top:22%; left:78%">
+        <div class="map-dot-circle dot-us"></div>
+        <div class="map-dot-label">The platform</div>
+      </div>
+      <!-- Incumbent competitor: bottom right-ish -->
+      <div class="map-dot" style="top:68%; left:60%">
+        <div class="map-dot-circle dot-comp"></div>
+        <div class="map-dot-label">Incumbent SaaS</div>
+      </div>
+      <!-- Secondary competitor: bottom left -->
+      <div class="map-dot" style="top:74%; left:30%">
+        <div class="map-dot-circle dot-comp2"></div>
+        <div class="map-dot-label">Point tools</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="note">
+    <b>Why this works:</b> The axes aren't neutral — they're chosen so the product lands alone in the most valuable quadrant. A good positioning map isn't an objective survey of the market; it's an argument about which dimensions matter, framed so your position looks inevitable.
+  </div>
+
+  <div class="section-rule">
+    <span class="sr-num">04</span>
+    <span class="sr-label">How to Reuse</span>
+    <span class="sr-line"></span>
+  </div>
+  <p class="lead-text">The framework applies to any brand. Four steps to run it on a new engagement.</p>
+
+  <div class="steps">
+    <div class="step">
+      <div class="step-num">1</div>
+      <div class="step-title">Fill layers 1–2</div>
+      <div class="step-desc">Interview the customer. Find the gap between what they think they buy and the real job.</div>
+    </div>
+    <div class="step">
+      <div class="step-num">2</div>
+      <div class="step-title">Map the contrast</div>
+      <div class="step-desc">Identify the incumbent and the single axis where you win. Build the 2×2.</div>
+    </div>
+    <div class="step">
+      <div class="step-num">3</div>
+      <div class="step-title">Anchor with proof</div>
+      <div class="step-desc">Find the one piece of evidence that makes the claim believable today, not someday.</div>
+    </div>
+    <div class="step">
+      <div class="step-num">4</div>
+      <div class="step-title">Compress to message</div>
+      <div class="step-desc">Distill all layers into one line a stranger repeats correctly after hearing it once.</div>
+    </div>
+  </div>
+
+</div>
+
+<footer>
+  <div class="foot-title">Positioning Framework</div>
+  <div class="foot-note">Reusable canvas · Anonymized worked example · Portfolio of Priscilla Aristotles</div>
+</footer>
+
+</body>
+</html>
